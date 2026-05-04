@@ -1,904 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1:1 Interview Scorecard — VNGGames NextGen 2026</title>
-  <style>
-    /* ── Reset ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1:1 Interview Scorecard — VNGGames NextGen 2026</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ── Inlined brand tokens (replaces colors_and_type.css) ── */
+  :root {
+    --vng-orange:       #F05A22;
+    --vng-yellow:       #FAC30A;
+    --vng-black-95:     rgba(13,13,13,.95);
+    --vng-neon-inferno: #C10024;
+    --accent-hover:     #D04A15;
+    --font-body:        'Inter Tight', system-ui, sans-serif;
+    --font-display:     'Inter Tight', system-ui, sans-serif;
+    --font-mono:        'SF Mono', 'Fira Code', monospace;
 
-    :root {
-      --brand-dark:   #0d0d1a;
-      --brand-mid:    #1a1a3e;
-      --accent:       #5b5fef;
-      --c-badge:      #5b5fef;
-      --g-badge:      #e8500a;
-      --s-badge:      #0a9e6e;
-      --p-badge:      #c0395b;
-      --pass:         #0a9e6e;
-      --fail:         #c0395b;
-      --border:       #e2e2ee;
-      --surface:      #f7f7fd;
-      --text:         #1a1a2e;
-      --muted:        #6b6b8a;
-      --radius:       10px;
-    }
+    --paper:       #FBFAF6;
+    --ink:         #0D0D0D;
+    --line:        rgba(13,13,13,.14);
+    --line-strong: rgba(13,13,13,.28);
+  }
 
-    body {
-      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
-      background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 100%);
-      min-height: 100vh;
-      padding: 40px 16px 64px;
-      color: var(--text);
-    }
+  html, body { margin: 0; padding: 0; background: #2A2725; font-family: var(--font-body); color: var(--ink); }
 
-    /* ── Card ── */
-    .card {
-      max-width: 820px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
-    }
+  /* ── Toolbar ── */
+  .toolbar {
+    position: sticky; top: 0; z-index: 50; display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; padding: 14px 28px; background: rgba(13,13,13,.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,.08); color: #fff;
+  }
+  .toolbar .left { display: flex; align-items: center; gap: 16px; }
+  .toolbar .left img { height: 22px; filter: brightness(0) invert(1); }
+  .toolbar .left .sep { width: 1px; height: 18px; background: rgba(255,255,255,.18); }
+  .toolbar .left .title { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .toolbar .center { display: flex; justify-content: center; }
+  .toolbar .right { display: flex; justify-content: flex-end; gap: 8px; }
+  .tbtn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
+    background: rgba(255,255,255,.08); color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,.12); transition: all .15s ease;
+    font-family: var(--font-body);
+  }
+  .tbtn:hover { background: rgba(255,255,255,.16); }
+  .tbtn.primary { background: var(--vng-orange); border-color: var(--vng-orange); }
+  .tbtn.primary:hover { background: var(--accent-hover); }
+  .tbtn.submit-btn { background: #2EF0A0; border-color: #2EF0A0; color: #0D0D0D; font-weight: 700; }
+  .tbtn.submit-btn:hover { background: #20d48e; border-color: #20d48e; }
+  .tbtn.submit-btn:disabled { background: rgba(255,255,255,.15); border-color: transparent; color: rgba(255,255,255,.4); cursor: not-allowed; }
+  .tbtn i { width: 14px; height: 14px; }
 
-    /* ── Header ── */
-    .hdr {
-      background: var(--brand-dark);
-      padding: 28px 40px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .hdr-logo {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .hdr-logo img {
-      height: 34px;
-      object-fit: contain;
-    }
-    .hdr-logo-text {
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .hdr-right {
-      text-align: right;
-    }
-    .hdr-right .badge {
-      display: inline-block;
-      background: rgba(91,95,239,0.25);
-      color: #a0a4ff;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(91,95,239,0.4);
-    }
-    .hdr-right .sub {
-      color: rgba(255,255,255,0.45);
-      font-size: 0.75rem;
-      margin-top: 6px;
-    }
+  .save-status { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); padding-left: 12px; }
+  .save-status.saved { color: #2EF0A0; }
 
-    /* ── Progress bar ── */
-    .progress-wrap {
-      background: #0d0d1a;
-      padding: 0 40px 20px;
-    }
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 6px;
-    }
-    .progress-track {
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 99px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
+  /* ── Stage ── */
+  .stage { padding: 32px 0 80px; display: flex; justify-content: center; }
+  .page {
+    width: 1123px;
+    min-height: 794px;
+    background: var(--paper);
+    color: var(--ink);
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.3);
+    overflow: hidden;
+    font-family: var(--font-body);
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+  }
 
-    /* ── Body ── */
-    .body { padding: 40px 40px 48px; }
+  /* ── Sheet header ── */
+  .sheet-header {
+    position: relative; height: 130px; background: var(--vng-orange); color: #fff; overflow: hidden;
+  }
+  .sheet-header::after {
+    content: ""; position: absolute; right: -120px; top: -120px; width: 380px; height: 380px;
+    background: radial-gradient(closest-side, rgba(250,195,10,.55), transparent 70%); pointer-events: none;
+  }
+  .sheet-header::before {
+    content: ""; position: absolute; left: -90px; bottom: -90px; width: 260px; height: 260px;
+    background: radial-gradient(closest-side, rgba(13,13,13,.35), transparent 70%); pointer-events: none;
+  }
+  .sheet-header .inner {
+    position: absolute; inset: 0; padding: 22px 44px 30px; z-index: 2;
+    display: flex; align-items: center; gap: 36px;
+  }
+  .sheet-header .titleblock { flex: 0 0 auto; }
+  .sheet-header .titleblock h1 {
+    font-family: var(--font-display); font-weight: 900; font-size: 52px; line-height: .9; text-transform: uppercase;
+    color: #fff; margin: 0; letter-spacing: -0.02em; display: flex; gap: 14px; align-items: baseline;
+  }
+  .sheet-header .titleblock h1 .y { color: var(--vng-yellow); }
+  .sheet-header .titleblock .tag {
+    margin-top: 6px; display: inline-flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 700;
+    letter-spacing: .26em; text-transform: uppercase; color: rgba(255,255,255,.92);
+  }
+  .sheet-header .titleblock .tag .dot { width: 6px; height: 6px; background: var(--vng-yellow); border-radius: 99px; }
+  .sheet-header .edge {
+    position: absolute; left: 0; right: 0; bottom: -1px; height: 14px;
+    background: var(--paper);
+    clip-path: polygon(0 100%, 100% 100%, 100% 60%, 0 0);
+  }
 
-    .page-title {
-      font-size: 1.65rem;
-      font-weight: 800;
-      color: var(--brand-dark);
-      margin-bottom: 4px;
-    }
-    .page-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 36px;
-    }
+  /* ── Info strip ── */
+  .info-strip {
+    padding: 18px 44px 14px;
+    display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px;
+    border-bottom: 1px solid var(--line);
+    align-items: end;
+  }
+  .field-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+  .field {
+    border-bottom: 1.5px solid var(--ink);
+    padding: 2px 0 4px;
+    position: relative;
+  }
+  .field .lbl {
+    display: block; font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--vng-orange); margin-bottom: 2px;
+  }
+  .field input {
+    border: 0; outline: 0; background: transparent; width: 100%; font-family: var(--font-body); font-size: 14px;
+    font-weight: 600; color: var(--ink); padding: 2px 0; letter-spacing: -0.01em;
+  }
+  .field input::placeholder { color: rgba(13,13,13,.25); font-weight: 500; }
 
-    /* ── Section label ── */
-    .section-label {
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      border-top: 2px solid var(--border);
-      padding-top: 28px;
-      margin-bottom: 20px;
-    }
+  /* ── Track selector ── */
+  .track-row { margin: 0; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .track-row .lbl-inline {
+    font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--vng-orange);
+    margin-right: 4px; display: block; width: 100%; margin-bottom: 4px;
+  }
+  .track-chip {
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .03em; color: var(--ink); cursor: pointer; transition: all .15s ease;
+    font-family: var(--font-body);
+  }
+  .track-chip:hover { background: rgba(13,13,13,.05); }
+  .track-chip.on { background: var(--vng-orange); border-color: var(--vng-orange); color: #fff; }
 
-    /* ── Field grid ── */
-    .field-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 560px) { .field-grid { grid-template-columns: 1fr; } }
+  /* ── Category grid ── */
+  .categories {
+    padding: 14px 44px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    min-height: 0;
+  }
+  .cat {
+    display: grid; grid-template-columns: 48px 1fr; gap: 14px;
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+    background: #fff; position: relative;
+    transition: border-color .2s ease, box-shadow .2s ease;
+    min-height: 0;
+  }
+  .cat:hover { border-color: var(--line-strong); }
+  .cat.has-error { border-color: #C10024 !important; box-shadow: 0 0 0 2px rgba(193,0,36,.12); }
+  .cat .badge {
+    width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 26px; font-weight: 900; line-height: 1; color: #fff; letter-spacing: 0;
+    align-self: start;
+  }
+  .cat[data-cat="C"] .badge { background: linear-gradient(160deg, #F05A22 0%, #B8421A 100%); }
+  .cat[data-cat="G"] .badge { background: linear-gradient(160deg, #FAC30A 0%, #F05A22 100%); color: #fff; }
+  .cat[data-cat="S"] .badge { background: linear-gradient(160deg, #FF9B1E 0%, #D2501E 100%); }
+  .cat[data-cat="P"] .badge { background: linear-gradient(160deg, #0D0D0D 0%, #333 100%); color: var(--vng-yellow); }
 
-    .field label {
-      display: block;
-      font-size: 0.73rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 7px;
-    }
-    .field input,
-    .field select {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 0.9rem;
-      color: var(--text);
-      background: var(--surface);
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      font-family: inherit;
-    }
-    .field input:focus,
-    .field select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(91,95,239,0.12);
-      background: #fff;
-    }
-    .field input.error,
-    .field select.error {
-      border-color: var(--fail);
-      box-shadow: 0 0 0 3px rgba(192,57,91,0.1);
-    }
-    .field-error {
-      font-size: 0.72rem;
-      color: var(--fail);
-      margin-top: 4px;
-      display: none;
-    }
-    .field-error.show { display: block; }
+  .cat .body { display: flex; flex-direction: column; min-width: 0; min-height: 0; flex: 1; }
+  .cat .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+  .cat .head .num { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--vng-orange); letter-spacing: 0; line-height: 1; }
+  .cat .head .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .cat .meta { font-size: 10.5px; color: rgba(13,13,13,.55); line-height: 1.4; margin-bottom: 6px; }
+  .cat textarea {
+    width: 100%; flex: 1; min-height: 80px; resize: none; border: 0; outline: 0; background: transparent;
+    font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: var(--ink); padding: 8px 0 0;
+    margin-top: 4px; border-top: 1px dashed var(--line);
+  }
+  .cat textarea::placeholder { color: rgba(13,13,13,.3); font-style: italic; }
 
-    /* ── Pillar cards ── */
-    .pillars { display: flex; flex-direction: column; gap: 22px; margin-bottom: 36px; }
+  /* ── Verdict ── */
+  .verdict {
+    margin: 0 44px 14px; padding: 14px 22px; border-radius: 12px;
+    background: var(--vng-black-95); color: #fff; position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;
+  }
+  .verdict::before {
+    content: ""; position: absolute; right: -80px; bottom: -80px; width: 220px; height: 220px;
+    background: radial-gradient(closest-side, rgba(240,90,34,.4), transparent 70%); pointer-events: none;
+  }
+  .verdict .left { z-index: 2; display: flex; align-items: center; gap: 22px; }
+  .verdict .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--vng-orange); margin-bottom: 1px; }
+  .verdict h3 { font-family: var(--font-display); font-size: 24px; font-weight: 900; text-transform: uppercase; margin: 0; color: #fff; letter-spacing: -0.01em; line-height: 1; }
+  .verdict .breakdown { font-size: 10.5px; color: rgba(255,255,255,.7); line-height: 1.5; max-width: 360px; margin: 0; }
+  .verdict .breakdown b { color: var(--vng-yellow); font-weight: 700; }
+  .verdict-actions { display: flex; gap: 8px; z-index: 2; }
+  .verdict-btn {
+    padding: 10px 22px; border-radius: 999px; font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1;
+    letter-spacing: 0; text-transform: uppercase; border: 2px solid rgba(255,255,255,.18); background: transparent;
+    color: rgba(255,255,255,.5); cursor: pointer; transition: all .15s ease; min-width: 90px; text-align: center;
+  }
+  .verdict-btn:hover { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.85); }
+  .verdict-btn.pass.on { background: #2EF0A0; border-color: #2EF0A0; color: #0D0D0D; box-shadow: 0 4px 14px rgba(46,240,160,.35); }
+  .verdict-btn.fail.on { background: var(--vng-neon-inferno); border-color: var(--vng-neon-inferno); color: #fff; box-shadow: 0 4px 14px rgba(193,0,36,.4); }
+  .verdict.has-error { outline: 2px solid #C10024; }
 
-    .pillar {
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: box-shadow 0.2s;
-    }
-    .pillar:focus-within {
-      box-shadow: 0 4px 20px rgba(91,95,239,0.12);
-      border-color: rgba(91,95,239,0.3);
-    }
+  /* ── Footer ── */
+  .sheet-footer {
+    position: relative; padding: 8px 44px 16px;
+    display: flex; justify-content: flex-end; align-items: end; gap: 24px;
+  }
+  .footer-meta { text-align: right; min-width: 180px; }
+  .footer-meta .stamp {
+    display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(13,13,13,.55); border: 1px solid var(--line-strong); padding: 4px 8px; border-radius: 4px;
+  }
+  .footer-meta .stamp b { color: var(--vng-orange); }
+  .footer-meta .conf { margin-top: 8px; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: rgba(13,13,13,.55); font-weight: 700; }
 
-    .pillar-hdr {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 16px 22px;
-      background: var(--surface);
-      border-bottom: 1.5px solid var(--border);
-    }
-    .badge-circle {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.05rem;
-      color: #fff;
-      flex-shrink: 0;
-    }
-    .badge-c { background: var(--c-badge); }
-    .badge-g { background: var(--g-badge); }
-    .badge-s { background: var(--s-badge); }
-    .badge-p { background: var(--p-badge); }
+  /* ── Toast ── */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(120px);
+    padding: 13px 24px; border-radius: 10px; font-size: 13px; font-weight: 700;
+    box-shadow: 0 8px 32px rgba(0,0,0,.35); transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999; display: flex; align-items: center; gap: 10px; white-space: nowrap;
+    font-family: var(--font-body); letter-spacing: .01em;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #2EF0A0; color: #0D0D0D; }
+  .toast.error   { background: var(--vng-neon-inferno); color: #fff; }
 
-    .pillar-meta { flex: 1; }
-    .pillar-num  { font-size: 0.68rem; color: var(--muted); font-weight: 700; letter-spacing: 0.1em; }
-    .pillar-name { font-size: 1.02rem; font-weight: 800; color: var(--brand-dark); margin: 2px 0 4px; }
-    .pillar-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  /* ── Success overlay ── */
+  .success-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(13,13,13,.82);
+    backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center;
+  }
+  .success-overlay.show { display: flex; }
+  .success-box {
+    background: var(--paper); border-radius: 20px; padding: 48px 52px; text-align: center;
+    box-shadow: 0 40px 80px rgba(0,0,0,.5); max-width: 420px;
+  }
+  .success-box .icon {
+    width: 72px; height: 72px; background: #2EF0A0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 20px; color: #0D0D0D; font-weight: 900;
+  }
+  .success-box h2 { font-size: 1.5rem; font-weight: 900; color: var(--ink); margin: 0 0 8px; }
+  .success-box p { font-size: 0.85rem; color: rgba(13,13,13,.6); margin: 0 0 28px; line-height: 1.6; }
+  .success-box .btn-new {
+    background: var(--vng-orange); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: .04em;
+    text-transform: uppercase; font-family: var(--font-body); transition: background .15s;
+  }
+  .success-box .btn-new:hover { background: var(--accent-hover); }
 
-    .pillar-body { padding: 18px 22px; display: flex; flex-direction: column; gap: 16px; }
-
-    /* Score selector */
-    .score-wrap label.score-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 8px;
-    }
-    .score-options {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .score-options input[type="radio"] { display: none; }
-    .score-options .score-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1.5px solid var(--border);
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--muted);
-      background: #fff;
-      transition: all 0.15s;
-      min-width: 68px;
-      text-align: center;
-      line-height: 1.3;
-    }
-    .score-options .score-btn .num {
-      font-size: 1.1rem;
-      font-weight: 900;
-      color: var(--brand-dark);
-      display: block;
-    }
-    .score-options input[type="radio"]:checked + .score-btn {
-      background: var(--brand-dark);
-      border-color: var(--brand-dark);
-      color: #fff;
-    }
-    .score-options input[type="radio"]:checked + .score-btn .num {
-      color: #fff;
-    }
-    .score-options .score-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .score-options .score-btn:hover .num { color: var(--accent); }
-
-    /* Notes */
-    .notes-wrap label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 7px;
-    }
-    .notes-wrap textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 0.875rem;
-      color: var(--text);
-      background: var(--surface);
-      resize: vertical;
-      min-height: 80px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      line-height: 1.6;
-    }
-    .notes-wrap textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(91,95,239,0.12);
-      background: #fff;
-    }
-
-    /* ── Verdict ── */
-    .verdict-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      margin-bottom: 36px;
-    }
-    .verdict-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; color: var(--brand-dark); }
-    .verdict-sub   { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
-    .verdict-options { display: flex; gap: 16px; }
-    .verdict-options input[type="radio"] { display: none; }
-    .verdict-options .verdict-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 18px;
-      border-radius: 10px;
-      border: 2px solid var(--border);
-      font-weight: 800;
-      font-size: 1.05rem;
-      cursor: pointer;
-      background: #fff;
-      color: var(--muted);
-      transition: all 0.2s;
-    }
-    .verdict-options .verdict-btn:hover { border-color: var(--accent); color: var(--accent); }
-    #v-pass:checked ~ .verdict-options label[for="v-pass"] {
-      background: var(--pass); color: #fff; border-color: var(--pass);
-    }
-    #v-fail:checked ~ .verdict-options label[for="v-fail"] {
-      background: var(--fail); color: #fff; border-color: var(--fail);
-    }
-    .verdict-error {
-      font-size: 0.75rem;
-      color: var(--fail);
-      margin-top: 10px;
-      display: none;
-    }
-    .verdict-error.show { display: block; }
-
-    /* ── Submit ── */
-    .submit-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .submit-note {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    .btn-submit {
-      background: var(--brand-dark);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 36px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-submit:hover  { background: #222250; }
-    .btn-submit:active { transform: scale(0.98); }
-    .btn-submit:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-
-    /* ── Toast ── */
-    .toast {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #1a1a2e;
-      color: #fff;
-      padding: 14px 28px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      white-space: nowrap;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast.success { background: var(--pass); }
-    .toast.error-toast { background: var(--fail); }
-
-    /* ── Success screen ── */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 64px 40px;
-    }
-    .success-screen .icon {
-      width: 72px;
-      height: 72px;
-      background: var(--pass);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 24px;
-    }
-    .success-screen h2 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--brand-dark);
-      margin-bottom: 10px;
-    }
-    .success-screen p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 28px;
-    }
-    .btn-another {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 28px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* ── Footer ── */
-    .form-footer {
-      border-top: 1.5px solid var(--border);
-      padding-top: 20px;
-      margin-top: 0;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: #bbb;
-      margin-bottom: -8px;
-    }
-
-    @media print {
-      body { background: #fff; padding: 0; }
-      .card { box-shadow: none; border-radius: 0; }
-    }
-  </style>
+  /* ── Print ── */
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    html, body { background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .toolbar, .success-overlay, .toast { display: none !important; }
+    .stage { padding: 0 !important; }
+    .page { box-shadow: none !important; width: 297mm !important; height: 210mm !important; }
+    .track-chip:not(.on) { opacity: .35 !important; }
+    .verdict-btn:not(.on) { opacity: .3 !important; }
+  }
+</style>
 </head>
 <body>
 
-<div class="card">
-
-  <!-- Header -->
-  <div class="hdr">
-    <div class="hdr-logo">
-      <img
-        src="https://0b7cdf7f-89be-4572-a15c-3e67d734705d.claudeusercontent.com/v1/design/projects/0b7cdf7f-89be-4572-a15c-3e67d734705d/serve/assets/logos/vnggames-logo-horizontal.png"
-        alt="VNGGames"
-        onerror="this.style.display='none'; document.querySelector('.hdr-logo-text').style.fontSize='1.3rem';"
-      />
-      <span class="hdr-logo-text">VNGGames</span>
-    </div>
-    <div class="hdr-right">
-      <span class="badge">NextGen 2026</span>
-      <div class="sub">Confidential · Hiring Panel Use Only</div>
-    </div>
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="left">
+    <img src="https://0b7cdf7f-89be-4572-a15c-3e67d734705d.claudeusercontent.com/v1/design/projects/0b7cdf7f-89be-4572-a15c-3e67d734705d/serve/assets/logos/vnggames-logo-horizontal.png"
+         alt="VNGGames"
+         onerror="this.style.display='none'">
+    <div class="sep"></div>
+    <div class="title">1:1 Interview Scorecard · NextGen 2026</div>
   </div>
-
-  <!-- Progress bar -->
-  <div class="progress-wrap">
-    <div class="progress-label">
-      <span>Form completion</span>
-      <span id="prog-pct">0%</span>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  <div class="center">
+    <button class="tbtn submit-btn" id="btnSubmit" onclick="submitScorecard()"><i data-lucide="send"></i><span id="btnLabel">Submit to Sheets</span></button>
   </div>
+  <div class="right"></div>
+</div>
 
-  <!-- Main form -->
-  <div class="body" id="form-wrap">
-    <div class="page-title">1:1 Interview Scorecard</div>
-    <div class="page-sub">Complete all four pillars, then submit your verdict</div>
+<!-- STAGE -->
+<div class="stage">
+  <div class="page" id="scorecard">
 
-    <form id="scorecard" novalidate>
-
-      <!-- Candidate info -->
-      <div class="section-label">Candidate Information</div>
-      <div class="field-grid">
-        <div class="field">
-          <label for="candidateName">Candidate Name *</label>
-          <input type="text" id="candidateName" name="candidateName" placeholder="Full name" autocomplete="off" />
-          <div class="field-error" id="err-name">Please enter the candidate's name.</div>
-        </div>
-        <div class="field">
-          <label for="candidateCode">Candidate Code *</label>
-          <input type="text" id="candidateCode" name="candidateCode" placeholder="e.g. NG2026-001" autocomplete="off" />
-          <div class="field-error" id="err-code">Please enter the candidate code.</div>
-        </div>
-        <div class="field">
-          <label for="interviewer">Interviewer Name *</label>
-          <input type="text" id="interviewer" name="interviewer" placeholder="Your full name" autocomplete="name" />
-          <div class="field-error" id="err-interviewer">Please enter your name.</div>
-        </div>
-        <div class="field">
-          <label for="track">Track Applied *</label>
-          <select id="track" name="track">
-            <option value="">— Select a track —</option>
-            <option>Game Developer</option>
-            <option>Game Designer</option>
-            <option>Player Experience</option>
-            <option>Marketing</option>
-            <option>Software Developer</option>
-          </select>
-          <div class="field-error" id="err-track">Please select a track.</div>
-        </div>
-        <div class="field">
-          <label for="interviewDate">Interview Date *</label>
-          <input type="date" id="interviewDate" name="interviewDate" />
-          <div class="field-error" id="err-date">Please enter the interview date.</div>
-        </div>
-        <div class="field">
-          <label for="interviewerEmail">Interviewer Email *</label>
-          <input type="email" id="interviewerEmail" name="interviewerEmail" placeholder="you@vnggames.com" autocomplete="email" />
-          <div class="field-error" id="err-email">Please enter a valid email address.</div>
+    <!-- HEADER -->
+    <div class="sheet-header">
+      <div class="inner">
+        <div class="titleblock">
+          <h1>1:1 Interview <span class="y">Scorecard</span></h1>
+          <div class="tag"><span class="dot"></span>Confidential · For Hiring Panel Use</div>
         </div>
       </div>
+      <div class="edge"></div>
+    </div>
 
-      <!-- Pillars -->
-      <div class="section-label" style="margin-top:12px;">Evaluation Pillars</div>
-      <div class="pillars">
-
-        <!-- C: Culture Fit -->
-        <div class="pillar">
-          <div class="pillar-hdr">
-            <div class="badge-circle badge-c">C</div>
-            <div class="pillar-meta">
-              <div class="pillar-num">PILLAR 01</div>
-              <div class="pillar-name">Culture Fit</div>
-              <div class="pillar-desc">Alignment with VNGGames values · ownership, candour, learn-fast mindset, team-first behaviour.</div>
-            </div>
-          </div>
-          <div class="pillar-body">
-            <div class="score-wrap">
-              <label class="score-label">Score *</label>
-              <div class="score-options" id="score-c-opts">
-                <input type="radio" name="scoreC" id="c1" value="1"><label class="score-btn" for="c1"><span class="num">1</span>Poor</label>
-                <input type="radio" name="scoreC" id="c2" value="2"><label class="score-btn" for="c2"><span class="num">2</span>Below</label>
-                <input type="radio" name="scoreC" id="c3" value="3"><label class="score-btn" for="c3"><span class="num">3</span>Meet</label>
-                <input type="radio" name="scoreC" id="c4" value="4"><label class="score-btn" for="c4"><span class="num">4</span>Exceed</label>
-                <input type="radio" name="scoreC" id="c5" value="5"><label class="score-btn" for="c5"><span class="num">5</span>Outstanding</label>
-              </div>
-              <div class="field-error" id="err-scoreC">Please select a score.</div>
-            </div>
-            <div class="notes-wrap">
-              <label for="notesC">Notes & Evidence</label>
-              <textarea id="notesC" name="notesC" placeholder="Specific examples, direct quotes, observable behaviours…"></textarea>
-            </div>
-          </div>
+    <!-- INFO STRIP -->
+    <div class="info-strip">
+      <div class="candidate-block">
+        <div class="field-grid">
+          <div class="field"><span class="lbl">Candidate Name</span><input type="text" data-field="name" placeholder="Full name"></div>
+          <div class="field"><span class="lbl">Candidate Code</span><input type="text" data-field="code" placeholder="MKT-XXX"></div>
+          <div class="field"><span class="lbl">Interviewer</span><input type="text" data-field="interviewer" placeholder="Name · role"></div>
         </div>
-
-        <!-- G: Gaming Passion -->
-        <div class="pillar">
-          <div class="pillar-hdr">
-            <div class="badge-circle badge-g">G</div>
-            <div class="pillar-meta">
-              <div class="pillar-num">PILLAR 02</div>
-              <div class="pillar-name">Gaming Passion</div>
-              <div class="pillar-desc">Genuine player &amp; maker. Articulates what they play, what interests them, what moves the game industry forward.</div>
-            </div>
-          </div>
-          <div class="pillar-body">
-            <div class="score-wrap">
-              <label class="score-label">Score *</label>
-              <div class="score-options" id="score-g-opts">
-                <input type="radio" name="scoreG" id="g1" value="1"><label class="score-btn" for="g1"><span class="num">1</span>Poor</label>
-                <input type="radio" name="scoreG" id="g2" value="2"><label class="score-btn" for="g2"><span class="num">2</span>Below</label>
-                <input type="radio" name="scoreG" id="g3" value="3"><label class="score-btn" for="g3"><span class="num">3</span>Meet</label>
-                <input type="radio" name="scoreG" id="g4" value="4"><label class="score-btn" for="g4"><span class="num">4</span>Exceed</label>
-                <input type="radio" name="scoreG" id="g5" value="5"><label class="score-btn" for="g5"><span class="num">5</span>Outstanding</label>
-              </div>
-              <div class="field-error" id="err-scoreG">Please select a score.</div>
-            </div>
-            <div class="notes-wrap">
-              <label for="notesG">Notes & Evidence</label>
-              <textarea id="notesG" name="notesG" placeholder="Specific examples, direct quotes, observable behaviours…"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- S: Soft Skills -->
-        <div class="pillar">
-          <div class="pillar-hdr">
-            <div class="badge-circle badge-s">S</div>
-            <div class="pillar-meta">
-              <div class="pillar-num">PILLAR 03</div>
-              <div class="pillar-name">Soft Skills</div>
-              <div class="pillar-desc">Communication, structured thinking, collaboration, conflict navigation, receiving and giving feedback.</div>
-            </div>
-          </div>
-          <div class="pillar-body">
-            <div class="score-wrap">
-              <label class="score-label">Score *</label>
-              <div class="score-options" id="score-s-opts">
-                <input type="radio" name="scoreS" id="s1" value="1"><label class="score-btn" for="s1"><span class="num">1</span>Poor</label>
-                <input type="radio" name="scoreS" id="s2" value="2"><label class="score-btn" for="s2"><span class="num">2</span>Below</label>
-                <input type="radio" name="scoreS" id="s3" value="3"><label class="score-btn" for="s3"><span class="num">3</span>Meet</label>
-                <input type="radio" name="scoreS" id="s4" value="4"><label class="score-btn" for="s4"><span class="num">4</span>Exceed</label>
-                <input type="radio" name="scoreS" id="s5" value="5"><label class="score-btn" for="s5"><span class="num">5</span>Outstanding</label>
-              </div>
-              <div class="field-error" id="err-scoreS">Please select a score.</div>
-            </div>
-            <div class="notes-wrap">
-              <label for="notesS">Notes & Evidence</label>
-              <textarea id="notesS" name="notesS" placeholder="Specific examples, direct quotes, observable behaviours…"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- P: Past Experience -->
-        <div class="pillar">
-          <div class="pillar-hdr">
-            <div class="badge-circle badge-p">P</div>
-            <div class="pillar-meta">
-              <div class="pillar-num">PILLAR 04</div>
-              <div class="pillar-name">Past Experience</div>
-              <div class="pillar-desc">Concrete work — projects shipped, decisions owned, lessons learned. What did they actually do, not what their team did.</div>
-            </div>
-          </div>
-          <div class="pillar-body">
-            <div class="score-wrap">
-              <label class="score-label">Score *</label>
-              <div class="score-options" id="score-p-opts">
-                <input type="radio" name="scoreP" id="p1" value="1"><label class="score-btn" for="p1"><span class="num">1</span>Poor</label>
-                <input type="radio" name="scoreP" id="p2" value="2"><label class="score-btn" for="p2"><span class="num">2</span>Below</label>
-                <input type="radio" name="scoreP" id="p3" value="3"><label class="score-btn" for="p3"><span class="num">3</span>Meet</label>
-                <input type="radio" name="scoreP" id="p4" value="4"><label class="score-btn" for="p4"><span class="num">4</span>Exceed</label>
-                <input type="radio" name="scoreP" id="p5" value="5"><label class="score-btn" for="p5"><span class="num">5</span>Outstanding</label>
-              </div>
-              <div class="field-error" id="err-scoreP">Please select a score.</div>
-            </div>
-            <div class="notes-wrap">
-              <label for="notesP">Notes & Evidence</label>
-              <textarea id="notesP" name="notesP" placeholder="Specific examples, direct quotes, observable behaviours…"></textarea>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /.pillars -->
-
-      <!-- Overall Verdict -->
-      <div class="verdict-card">
-        <div class="verdict-title">Overall Verdict</div>
-        <div class="verdict-sub">Select your recommendation based on evidence across all four pillars.</div>
-        <input type="radio" name="verdict" id="v-pass" value="Pass">
-        <input type="radio" name="verdict" id="v-fail" value="Fail">
-        <div class="verdict-options">
-          <label class="verdict-btn" for="v-pass" id="lbl-pass">✓&nbsp;&nbsp;Pass</label>
-          <label class="verdict-btn" for="v-fail" id="lbl-fail">✗&nbsp;&nbsp;Fail</label>
-        </div>
-        <div class="verdict-error" id="err-verdict">Please select a verdict before submitting.</div>
       </div>
-
-      <!-- Additional comments -->
-      <div class="section-label" style="margin-top:0;">Additional Comments</div>
-      <div class="notes-wrap" style="margin-bottom:32px;">
-        <label for="additionalComments">Overall observations, context, or follow-up recommendations</label>
-        <textarea id="additionalComments" name="additionalComments" style="min-height:100px;" placeholder="Optional — any other notes for the hiring panel…"></textarea>
+      <div class="track-row">
+        <span class="lbl-inline">Track Applied</span>
+        <button class="track-chip" data-track="Game Developer">Game Developer</button>
+        <button class="track-chip" data-track="Game Designer">Game Designer</button>
+        <button class="track-chip" data-track="Player Experience">Player Experience</button>
+        <button class="track-chip" data-track="Marketing">Marketing</button>
+        <button class="track-chip" data-track="Software Developer">Software Developer</button>
       </div>
+    </div>
 
-      <!-- Submit row -->
-      <div class="submit-row">
-        <span class="submit-note">⚡ Submission is saved directly to Google Sheets</span>
-        <button type="submit" class="btn-submit" id="btn-submit">
-          <span id="btn-text">Submit Scorecard</span>
-          <span id="btn-spinner" style="display:none;">Submitting…</span>
-        </button>
+    <!-- CATEGORIES (2×2) -->
+    <div class="categories">
+      <div class="cat" data-cat="C" data-key="culture">
+        <div class="badge">C</div>
+        <div class="body">
+          <div class="head"><span class="num">01</span><span class="name">Culture Fit</span></div>
+          <div class="meta">Alignment with VNGGames values · ownership, candour, learn-fast mindset, team-first behaviour.</div>
+          <textarea placeholder="Comments &amp; feedback — what stood out, examples cited, red/green flags…" data-comment="culture"></textarea>
+        </div>
       </div>
-
-      <!-- Footer -->
-      <div class="form-footer" style="margin-top:28px;">
-        <span>FORM TA-IS-01 · REV. MAY 2026</span>
-        <span>Confidential · VNGGames Talent Acquisition</span>
+      <div class="cat" data-cat="G" data-key="gaming">
+        <div class="badge">G</div>
+        <div class="body">
+          <div class="head"><span class="num">02</span><span class="name">Gaming Passion</span></div>
+          <div class="meta">Genuine player &amp; maker. Articulates what they play, what interests them, what moves the game industry forward.</div>
+          <textarea placeholder="Specific titles, communities, projects, opinions — depth over breadth…" data-comment="gaming"></textarea>
+        </div>
       </div>
+      <div class="cat" data-cat="S" data-key="soft">
+        <div class="badge">S</div>
+        <div class="body">
+          <div class="head"><span class="num">03</span><span class="name">Soft-Skill</span></div>
+          <div class="meta">Communication, structured thinking, collaboration, conflict navigation, receiving and giving feedback.</div>
+          <textarea placeholder="How they explain trade-offs, handle pushback, listen, ask questions…" data-comment="soft"></textarea>
+        </div>
+      </div>
+      <div class="cat" data-cat="P" data-key="past">
+        <div class="badge">P</div>
+        <div class="body">
+          <div class="head"><span class="num">04</span><span class="name">Past Experience</span></div>
+          <div class="meta">Concrete work — projects shipped, decisions owned, lessons learned. What did they actually do, not what their team did.</div>
+          <textarea placeholder="Specific contributions, scope, scale, impact, growth between projects…" data-comment="past"></textarea>
+        </div>
+      </div>
+    </div>
 
-    </form>
-  </div><!-- /.body -->
+    <!-- VERDICT -->
+    <div class="verdict" id="verdictBlock">
+      <div class="left">
+        <div>
+          <div class="eyebrow">Overall Verdict</div>
+          <h3>Recommendation</h3>
+        </div>
+        <div class="breakdown" id="breakdown">Select a recommendation based on the panel's evidence across all four pillars.</div>
+      </div>
+      <div class="verdict-actions">
+        <button class="verdict-btn pass" data-verdict="pass">Pass</button>
+        <button class="verdict-btn fail" data-verdict="fail">Fail</button>
+      </div>
+    </div>
 
-  <!-- Success screen -->
-  <div class="success-screen" id="success-screen">
+    <!-- FOOTER -->
+    <div class="sheet-footer">
+      <div class="footer-meta">
+        <div class="conf">Confidential · VNGGames TA</div>
+      </div>
+    </div>
+
+  </div><!-- /.page -->
+</div><!-- /.stage -->
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
     <div class="icon">✓</div>
     <h2>Scorecard Submitted</h2>
-    <p>Your feedback has been recorded in the VNGGames NextGen 2026 sheet.<br>Thank you for your time.</p>
-    <button class="btn-another" onclick="resetForm()">Submit Another</button>
+    <p>Feedback for <strong id="successName">this candidate</strong> has been recorded in the VNGGames NextGen 2026 sheet. Thank you.</p>
+    <button class="btn-new" onclick="resetForm()">Start New Scorecard</button>
   </div>
+</div>
 
-</div><!-- /.card -->
-
-<!-- Toast -->
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─────────────────────────────────────────────
-  // CONFIG — paste your Google Apps Script URL here
-  // ─────────────────────────────────────────────
+  // ─── CONFIG ───────────────────────────────────────────────────────
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztslEu8akYTEsGwlhqm-V2n7Vo2gCXUSE0_4S_GNXocBjrGwwEIVUmPyV9bnXgNjDD/exec';
 
-  // ── Progress bar ──────────────────────────────
-  const FIELDS = [
-    'candidateName','candidateCode','interviewer','track','interviewDate','interviewerEmail',
-    'scoreC','scoreG','scoreS','scoreP','verdict'
-  ];
-  function updateProgress() {
-    let filled = 0;
-    FIELDS.forEach(f => {
-      const radios = document.querySelectorAll(`input[name="${f}"]`);
-      if (radios.length > 1) {
-        if ([...radios].some(r => r.checked)) filled++;
-      } else {
-        const el = document.getElementById(f) || document.querySelector(`[name="${f}"]`);
-        if (el && el.value.trim()) filled++;
-      }
-    });
-    const pct = Math.round((filled / FIELDS.length) * 100);
-    document.getElementById('prog-fill').style.width = pct + '%';
-    document.getElementById('prog-pct').textContent = pct + '%';
-  }
-  document.getElementById('scorecard').addEventListener('input', updateProgress);
-  document.getElementById('scorecard').addEventListener('change', updateProgress);
+  // ─── State ────────────────────────────────────────────────────────
+  const KEY   = 'vng_scorecard_v2';
+  const state = { fields: {}, comments: {}, track: null, verdict: null };
 
-  // ── Verdict visual (JS fallback for CSS sibling) ──
-  document.querySelectorAll('input[name="verdict"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      document.getElementById('lbl-pass').style.cssText = '';
-      document.getElementById('lbl-fail').style.cssText = '';
-      const lbl = document.getElementById(radio.value === 'Pass' ? 'lbl-pass' : 'lbl-fail');
-      lbl.style.background = radio.value === 'Pass' ? 'var(--pass)' : 'var(--fail)';
-      lbl.style.color = '#fff';
-      lbl.style.borderColor = radio.value === 'Pass' ? 'var(--pass)' : 'var(--fail)';
+  // ─── Persist ──────────────────────────────────────────────────────
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+    const el = document.getElementById('saveStatus');
+    el.textContent = 'Saved · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    el.classList.add('saved');
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      Object.assign(state, saved);
+      document.querySelectorAll('[data-field]').forEach(i => {
+        if (state.fields[i.dataset.field]) i.value = state.fields[i.dataset.field];
+      });
+      document.querySelectorAll('[data-comment]').forEach(t => {
+        if (state.comments[t.dataset.comment]) t.value = state.comments[t.dataset.comment];
+      });
+      if (state.track) {
+        document.querySelector(`.track-chip[data-track="${state.track}"]`)?.classList.add('on');
+      }
+      if (state.verdict) {
+        document.querySelector(`.verdict-btn[data-verdict="${state.verdict}"]`)?.classList.add('on');
+        styleVerdict(state.verdict);
+      }
+    } catch(e) { console.warn(e); }
+  }
+
+  function styleVerdict(v) {
+    const bd = document.getElementById('breakdown');
+    if (v === 'pass') bd.innerHTML = '<b>✓ Pass</b> — Candidate is recommended to proceed to the next stage.';
+    else if (v === 'fail') bd.innerHTML = '<b style="color:#F05A22">✗ Fail</b> — Candidate is not recommended to proceed at this time.';
+  }
+
+  // ─── Bind inputs ──────────────────────────────────────────────────
+  document.querySelectorAll('[data-field]').forEach(i => {
+    i.addEventListener('input', () => { state.fields[i.dataset.field] = i.value; persist(); });
+  });
+  document.querySelectorAll('[data-comment]').forEach(t => {
+    t.addEventListener('input', () => { state.comments[t.dataset.comment] = t.value; persist(); });
+  });
+  document.querySelectorAll('.track-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.track-chip').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      state.track = c.dataset.track;
+      persist();
+    });
+  });
+  document.querySelectorAll('.verdict-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.verdict-btn').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      state.verdict = b.dataset.verdict;
+      document.getElementById('verdictBlock').classList.remove('has-error');
+      styleVerdict(state.verdict);
+      persist();
     });
   });
 
-  // ── Toast helper ──────────────────────────────
+  // ─── Toast helper ─────────────────────────────────────────────────
   function showToast(msg, type = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.className = 'toast show ' + type;
-    setTimeout(() => t.className = 'toast', 3800);
+    setTimeout(() => t.className = 'toast', 4000);
   }
 
-  // ── Validation ────────────────────────────────
+  // ─── Validate ─────────────────────────────────────────────────────
   function validate() {
     let ok = true;
-    const req = [
-      { id: 'candidateName',   err: 'err-name' },
-      { id: 'candidateCode',   err: 'err-code' },
-      { id: 'interviewer',     err: 'err-interviewer' },
-      { id: 'track',           err: 'err-track' },
-      { id: 'interviewDate',   err: 'err-date' },
-      { id: 'interviewerEmail',err: 'err-email' },
-    ];
-    req.forEach(({ id, err }) => {
-      const el = document.getElementById(id);
-      const errEl = document.getElementById(err);
-      if (!el.value.trim() || (id === 'interviewerEmail' && !el.value.includes('@'))) {
-        el.classList.add('error');
-        errEl.classList.add('show');
+
+    // Required text fields
+    ['name', 'code', 'interviewer'].forEach(f => {
+      const el = document.querySelector(`[data-field="${f}"]`);
+      if (!el || !el.value.trim()) {
+        el && (el.style.borderBottom = '2px solid #C10024');
         ok = false;
       } else {
-        el.classList.remove('error');
-        errEl.classList.remove('show');
+        el && (el.style.borderBottom = '');
       }
     });
-    ['C','G','S','P'].forEach(p => {
-      const checked = document.querySelector(`input[name="score${p}"]:checked`);
-      const errEl = document.getElementById(`err-score${p}`);
-      if (!checked) { errEl.classList.add('show'); ok = false; }
-      else errEl.classList.remove('show');
-    });
-    const verdict = document.querySelector('input[name="verdict"]:checked');
-    const vErr = document.getElementById('err-verdict');
-    if (!verdict) { vErr.classList.add('show'); ok = false; }
-    else vErr.classList.remove('show');
+
+    // Verdict
+    if (!state.verdict) {
+      document.getElementById('verdictBlock').classList.add('has-error');
+      ok = false;
+    }
+
     return ok;
   }
 
-  // ── Submit ────────────────────────────────────
-  document.getElementById('scorecard').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  // ─── Submit to Google Sheets ──────────────────────────────────────
+  async function submitScorecard() {
     if (!validate()) {
-      showToast('⚠️ Please complete all required fields.', 'error-toast');
+      showToast('⚠️ Please fill in all required fields and select a verdict.', 'error');
       return;
     }
 
-    const btn = document.getElementById('btn-submit');
-    document.getElementById('btn-text').style.display = 'none';
-    document.getElementById('btn-spinner').style.display = 'inline';
+    const btn   = document.getElementById('btnSubmit');
+    const label = document.getElementById('btnLabel');
     btn.disabled = true;
+    label.textContent = 'Submitting…';
 
     const data = {
-      submittedAt:        new Date().toISOString(),
-      candidateName:      document.getElementById('candidateName').value.trim(),
-      candidateCode:      document.getElementById('candidateCode').value.trim(),
-      interviewer:        document.getElementById('interviewer').value.trim(),
-      interviewerEmail:   document.getElementById('interviewerEmail').value.trim(),
-      track:              document.getElementById('track').value,
-      interviewDate:      document.getElementById('interviewDate').value,
-      scoreC:             document.querySelector('input[name="scoreC"]:checked')?.value || '',
-      notesC:             document.getElementById('notesC').value.trim(),
-      scoreG:             document.querySelector('input[name="scoreG"]:checked')?.value || '',
-      notesG:             document.getElementById('notesG').value.trim(),
-      scoreS:             document.querySelector('input[name="scoreS"]:checked')?.value || '',
-      notesS:             document.getElementById('notesS').value.trim(),
-      scoreP:             document.querySelector('input[name="scoreP"]:checked')?.value || '',
-      notesP:             document.getElementById('notesP').value.trim(),
-      averageScore:       (
-        [
-          document.querySelector('input[name="scoreC"]:checked')?.value,
-          document.querySelector('input[name="scoreG"]:checked')?.value,
-          document.querySelector('input[name="scoreS"]:checked')?.value,
-          document.querySelector('input[name="scoreP"]:checked')?.value,
-        ].reduce((sum, v) => sum + (parseInt(v) || 0), 0) / 4
-      ).toFixed(2),
-      verdict:            document.querySelector('input[name="verdict"]:checked')?.value || '',
-      additionalComments: document.getElementById('additionalComments').value.trim(),
+      submittedAt:         new Date().toISOString(),
+      candidateName:       state.fields.name       || '',
+      candidateCode:       state.fields.code       || '',
+      interviewer:         state.fields.interviewer || '',
+      track:               state.track             || '',
+      verdict:             state.verdict           ? state.verdict.charAt(0).toUpperCase() + state.verdict.slice(1) : '',
+      commentsCulture:     state.comments.culture  || '',
+      commentsGaming:      state.comments.gaming   || '',
+      commentsSoft:        state.comments.soft     || '',
+      commentsPast:        state.comments.past     || '',
     };
 
     try {
-      // Use text/plain so the browser treats this as a "simple" CORS request —
-      // application/json triggers a preflight that no-cors blocks silently.
       await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
+        method:  'POST',
+        mode:    'no-cors',
         headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(data),
+        body:    JSON.stringify(data),
       });
-      // no-cors means we can't read the response — treat as success
-      document.getElementById('form-wrap').style.display = 'none';
-      document.getElementById('success-screen').style.display = 'block';
-      showToast('✓ Scorecard saved to Google Sheets!', 'success');
-    } catch (err) {
-      showToast('❌ Submission failed. Please try again.', 'error-toast');
-      document.getElementById('btn-text').style.display = 'inline';
-      document.getElementById('btn-spinner').style.display = 'none';
-      btn.disabled = false;
-    }
-  });
 
-  // ── Reset ─────────────────────────────────────
-  function resetForm() {
-    document.getElementById('scorecard').reset();
-    document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
-    document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
-    document.getElementById('lbl-pass').style.cssText = '';
-    document.getElementById('lbl-fail').style.cssText = '';
-    document.getElementById('btn-text').style.display = 'inline';
-    document.getElementById('btn-spinner').style.display = 'none';
-    document.getElementById('btn-submit').disabled = false;
-    document.getElementById('form-wrap').style.display = 'block';
-    document.getElementById('success-screen').style.display = 'none';
-    updateProgress();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Show success
+      document.getElementById('successName').textContent = data.candidateName || 'this candidate';
+      document.getElementById('successOverlay').classList.add('show');
+      showToast('✓ Saved to Google Sheets!', 'success');
+
+    } catch(err) {
+      showToast('❌ Submission failed — please try again.', 'error');
+      btn.disabled = false;
+      label.textContent = 'Submit to Sheets';
+    }
   }
 
-  // Set default interview date to today
-  document.getElementById('interviewDate').value = new Date().toISOString().split('T')[0];
-  updateProgress();
+  // ─── Reset ────────────────────────────────────────────────────────
+  function resetForm() {
+    if (!document.getElementById('successOverlay').classList.contains('show')) {
+      if (!confirm('Clear all entries on this scorecard?')) return;
+    }
+    try { localStorage.removeItem(KEY); } catch(e){}
+    location.reload();
+  }
+
+  // ─── Export JSON ──────────────────────────────────────────────────
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const name = (state.fields.name || 'scorecard').replace(/\s+/g, '_');
+    a.href = url; a.download = `vnggames_${name}_${Date.now()}.json`; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ─── Init ─────────────────────────────────────────────────────────
+  loadState();
+  lucide.createIcons();
 </script>
+
 </body>
 </html>
