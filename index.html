@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phiếu Chấm Điểm Phỏng Vấn - MKT | VNGGames NextGen</title>
+    <title>Phiếu Chấm Điểm Phỏng Vấn - MKT & PX | VNGGames NextGen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -108,8 +108,8 @@
                         <input type="text" data-field="candidateId" placeholder="VD: MKT-001" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Người phỏng vấn</label>
-                        <input type="text" data-field="interviewer" placeholder="Tên · Vị trí" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Domain Người Phỏng Vấn</label>
+                        <input type="text" data-field="interviewer" placeholder="VD: thanglx, minhlth, etc." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -118,7 +118,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vị trí ứng tuyển</label>
-                            <select data-field="position" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-medium">
+                            <select id="positionSelect" data-field="position" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-medium">
                                 <option value="Marketing">Marketing</option>
                                 <option value="Player Experience">Player Experience</option>
                             </select>
@@ -245,18 +245,20 @@
                     </div>
                 </div>
 
-                <!-- TIÊU CHÍ 3: MKT KNOWLEDGE -->
-                <div class="mb-10">
+                <!-- KHU VỰC TIÊU CHÍ 3 (ĐƯỢC CHUYỂN ĐỔI BẰNG JAVASCRIPT) -->
+                
+                <!-- TRACK 1: MARKETING KNOWLEDGE -->
+                <div id="mkt-track" class="mb-10 block">
                     <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
                         <i data-lucide="briefcase" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (MKT)</h3>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (Marketing)</h3>
                     </div>
                     
                     <div class="space-y-4">
                         <!-- Func Row 1 -->
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
                             <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">MKT & User Acquisition</p>
+                                <p class="font-bold text-gray-900">Marketing & User Acquisition</p>
                                 <p class="text-xs text-gray-500 mt-1">Hiểu channel, CPA/CPI, đánh giá hiệu quả.</p>
                             </div>
                             <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
@@ -323,6 +325,84 @@
                     </div>
                 </div>
 
+                <!-- TRACK 2: PX KNOWLEDGE -->
+                <div id="px-track" class="mb-10 hidden">
+                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
+                        <i data-lucide="headset" class="w-5 h-5 text-gray-700"></i>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (Player Experience)</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- PX Row 1 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Player Empathy & Support</p>
+                                <p class="text-xs text-gray-500 mt-1">Thấu hiểu tâm lý người chơi, hành vi in-game, xác định pain-points.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_px_empathy_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- PX Row 2 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Customer Support & Ops</p>
+                                <p class="text-xs text-gray-500 mt-1">Quy trình xử lý khiếu nại, ticket, VIP care, quản lý SLAs.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_px_ops_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- PX Row 3 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Data & Analytical Thinking</p>
+                                <p class="text-xs text-gray-500 mt-1">Đọc data, phân tích feedback/CSAT, diễn giải metric thành action.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_px_data_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- PX Row 4 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Execution & Project Mgmt</p>
+                                <p class="text-xs text-gray-500 mt-1">Lên kế hoạch, phối hợp cross-team, ship đúng hạn, xử lý sự cố.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_px_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="page-break"></div>
 
                 <!-- TỔNG KẾT & QUYẾT ĐỊNH -->
@@ -375,6 +455,30 @@
             verdict: ''
         };
 
+        // Hàm ẩn/hiện Track MKT hoặc PX dựa trên Dropdown Vị trí
+        function toggleTrackVisibility() {
+            const pos = document.getElementById('positionSelect').value;
+            const mktTrack = document.getElementById('mkt-track');
+            const pxTrack = document.getElementById('px-track');
+            
+            if (pos === 'Marketing') {
+                mktTrack.classList.remove('hidden');
+                mktTrack.classList.add('block');
+                pxTrack.classList.remove('block');
+                pxTrack.classList.add('hidden');
+            } else if (pos === 'Player Experience') {
+                mktTrack.classList.remove('block');
+                mktTrack.classList.add('hidden');
+                pxTrack.classList.remove('hidden');
+                pxTrack.classList.add('block');
+            }
+        }
+
+        // Lắng nghe sự kiện thay đổi trên dropdown Vị trí
+        document.getElementById('positionSelect').addEventListener('change', (e) => {
+            toggleTrackVisibility();
+        });
+
         // Load dữ liệu từ LocalStorage
         function loadState() {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -392,6 +496,9 @@
                     el.value = state.fields[el.dataset.field];
                 }
             });
+
+            // Gọi logic toggleTrack sau khi phục hồi select value
+            toggleTrackVisibility();
 
             // Phục hồi Comments
             document.querySelectorAll('[data-comment]').forEach(el => {
@@ -565,6 +672,7 @@
             posSelect.value = "Marketing";
             state.fields.position = "Marketing";
             persist();
+            toggleTrackVisibility();
         }
     </script>
 </body>
