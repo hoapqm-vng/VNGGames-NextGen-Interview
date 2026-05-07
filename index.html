@@ -1,679 +1,726 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phiếu Chấm Điểm Phỏng Vấn - MKT & PX | VNGGames NextGen</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phiếu Chấm Điểm Phỏng Vấn · VNGGames NextGen 2026</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --ink: #111827;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+  }
 
-        /* Tùy chỉnh thanh cuộn cho textareas */
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+  html, body {
+    margin: 0; padding: 0;
+    background: #F3F4F6;
+    font-family: var(--font-body);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
 
-        /* Ẩn các phần tử không cần thiết khi in */
-        @media print {
-            body { background-color: white; }
-            .no-print { display: none !important; }
-            .print-border-none { border: none !important; box-shadow: none !important; }
-            .print-p-0 { padding: 0 !important; }
-            .print-max-w-full { max-width: 100% !important; }
-            textarea { border: 1px solid #e5e7eb !important; overflow: hidden; }
-            .score-btn { border: 1px solid #d1d5db; }
-            .score-btn.active { border-color: #f97316; background-color: #fff7ed; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .verdict-btn.active { background-color: #f3f4f6; border-color: #374151; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .page-break { page-break-before: always; }
-        }
+  /* ── TOOLBAR ── */
+  .toolbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; height: 60px;
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 12px; }
+  .toolbar-brand {
+    width: 36px; height: 36px; background: var(--vng-orange); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    flex-shrink: 0;
+  }
+  .toolbar-brand i { width: 18px; height: 18px; }
+  .toolbar-title h1 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin: 0; line-height: 1.2; }
+  .toolbar-title p { font-size: 11px; color: var(--gray-500); margin: 0; font-weight: 500; }
+  .save-badge {
+    font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--gray-500);
+    padding: 4px 10px; background: var(--gray-100); border-radius: 999px;
+    transition: all .3s ease;
+  }
+  .save-badge.saved { background: #D1FAE5; color: #065F46; }
+  .toolbar-right { display: flex; gap: 8px; align-items: center; }
+  .tbtn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 6px; border: 1px solid var(--gray-200);
+    background: white; color: var(--gray-700); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all .15s ease; font-family: var(--font-body);
+  }
+  .tbtn:hover { background: var(--gray-50); border-color: var(--gray-300); }
+  .tbtn i { width: 14px; height: 14px; }
+  .tbtn.danger:hover { color: #DC2626; background: #FEF2F2; border-color: #FECACA; }
+  .tbtn.primary {
+    background: var(--gray-900); color: #fff; border-color: var(--gray-900);
+  }
+  .tbtn.primary:hover { background: #1F2937; }
+  .tbtn.success { background: #059669; color: #fff; border-color: #059669; }
 
-        /* Styling cho nút điểm */
-        .score-btn {
-            transition: all 0.2s;
-        }
-        .score-btn.active {
-            background-color: #f97316;
-            color: white;
-            border-color: #ea580c;
-        }
-        
-        /* Styling cho quyết định */
-        .verdict-btn { transition: all 0.2s; }
-        .verdict-btn.active {
-            background-color: #1f2937;
-            color: white;
-            border-color: #111827;
-        }
-        
-        .verdict-btn.active-hire { background-color: #16a34a; color: white; border-color: #15803d; }
-        .verdict-btn.active-hold { background-color: #d97706; color: white; border-color: #b45309; }
-        .verdict-btn.active-reject { background-color: #dc2626; color: white; border-color: #b91c1c; }
-    </style>
+  /* ── PAGE WRAP ── */
+  .page-wrap { max-width: 900px; margin: 0 auto; padding: 28px 16px 80px; }
+
+  /* ── CARD ── */
+  .card {
+    background: white; border-radius: 12px; border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06); overflow: hidden; margin-bottom: 20px;
+  }
+
+  /* ── FORM HEADER BAND ── */
+  .form-header {
+    position: relative; overflow: hidden;
+    background: var(--vng-orange); color: #fff; padding: 36px 40px 28px;
+  }
+  .form-header::after {
+    content: ""; position: absolute; right: -100px; top: -100px; width: 400px; height: 400px;
+    background: radial-gradient(closest-side, rgba(250,195,10,.5), transparent 70%); pointer-events: none;
+  }
+  .form-header::before {
+    content: ""; position: absolute; left: -80px; bottom: -80px; width: 280px; height: 280px;
+    background: radial-gradient(closest-side, rgba(0,0,0,.2), transparent 70%); pointer-events: none;
+  }
+  .form-header .inner { position: relative; z-index: 2; }
+  .form-header .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(255,255,255,.85); margin-bottom: 10px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 12px; background: rgba(0,0,0,.2); border-radius: 999px;
+  }
+  .form-header .eyebrow i { width: 12px; height: 12px; }
+  .form-header h2 {
+    font-family: var(--font-display); font-size: 64px; font-weight: 400; text-transform: uppercase;
+    line-height: .95; letter-spacing: 0; color: #fff; margin: 12px 0 6px;
+  }
+  .form-header h2 .y { color: var(--vng-yellow); display: block; }
+  .form-header .form-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.8); margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .form-header .form-tag span {
+    width: 6px; height: 6px; background: var(--vng-yellow); border-radius: 99px; display: inline-block;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 20px 28px 14px;
+    border-bottom: 2px solid var(--gray-900);
+    margin-bottom: 0;
+  }
+  .section-head i { width: 18px; height: 18px; color: var(--gray-700); flex-shrink: 0; }
+  .section-head h3 {
+    font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--gray-900); margin: 0;
+  }
+
+  /* ── CANDIDATE INFO ── */
+  .candidate-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    padding: 20px 28px;
+  }
+  .field-label {
+    display: block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .14em; color: var(--gray-500); margin-bottom: 5px;
+  }
+  .field-input {
+    width: 100%; box-sizing: border-box;
+    padding: 9px 12px; border: 1px solid var(--gray-300); border-radius: 6px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--gray-900);
+    background: white; outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .field-input:focus {
+    border-color: var(--vng-orange);
+    box-shadow: 0 0 0 3px rgba(240,90,34,.15);
+  }
+  .field-input::placeholder { color: var(--gray-300); font-weight: 400; }
+  .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── SCALE LEGEND ── */
+  .scale-legend {
+    display: flex; gap: 16px; flex-wrap: wrap; padding: 14px 28px;
+    background: var(--gray-50); border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .scale-item { display: flex; align-items: center; gap: 8px; }
+  .scale-chip {
+    width: 26px; height: 26px; border-radius: 5px; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    border: 1px solid;
+  }
+  .scale-chip.s1 { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+  .scale-chip.s2 { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+  .scale-chip.s3 { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+  .scale-chip.s4 { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
+  .scale-item span { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+
+  /* ── CRITERIA SECTION ── */
+  .criteria-section { padding: 20px 28px; }
+  .criteria-row {
+    display: grid; grid-template-columns: 190px 192px 1fr; gap: 14px;
+    align-items: start;
+    background: var(--gray-50); border: 1px solid var(--gray-100);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+  }
+  .criteria-row:last-child { margin-bottom: 0; }
+  .crit-name { font-weight: 700; font-size: 13px; color: var(--gray-900); }
+  .crit-sub { font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.5; }
+  .score-btns { display: flex; gap: 6px; padding-top: 2px; flex-wrap: nowrap; flex-shrink: 0; }
+  .score-btn {
+    width: 38px; height: 38px; border-radius: 6px; border: 1px solid var(--gray-300);
+    font-family: var(--font-body); font-size: 15px; font-weight: 700; color: var(--gray-700);
+    background: white; cursor: pointer; transition: all .12s ease; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-btn:hover { border-color: var(--vng-orange); color: var(--vng-orange); }
+  .score-btn.active {
+    background: var(--vng-orange); color: white; border-color: #EA580C;
+    box-shadow: 0 2px 6px rgba(240,90,34,.3);
+  }
+  .criteria-note {
+    width: 100%; box-sizing: border-box; min-height: 76px; resize: vertical;
+    padding: 8px 10px; border: 1px solid var(--gray-300); border-radius: 6px;
+    font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: var(--gray-900);
+    background: white; outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .criteria-note:focus {
+    border-color: var(--vng-orange);
+    box-shadow: 0 0 0 3px rgba(240,90,34,.12);
+  }
+  .criteria-note::placeholder { color: var(--gray-300); font-style: italic; }
+
+  /* ── OVERALL SECTION ── */
+  .overall-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 20px 28px; }
+  .overall-label { font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; display: block; }
+  .overall-textarea {
+    width: 100%; box-sizing: border-box; height: 100px; resize: vertical;
+    padding: 8px 10px; border: 1px solid var(--gray-300); border-radius: 6px;
+    font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--gray-900);
+    background: white; outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .overall-textarea:focus {
+    border-color: var(--vng-orange); box-shadow: 0 0 0 3px rgba(240,90,34,.12);
+  }
+  .overall-textarea::placeholder { color: var(--gray-300); font-style: italic; }
+
+  /* ── VERDICT ── */
+  .verdict-block {
+    background: var(--gray-900); border-radius: 12px; padding: 24px 28px;
+    margin: 0 0 20px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: space-between; gap: 28px;
+  }
+  .verdict-block::before {
+    content: ""; position: absolute; right: -80px; bottom: -80px; width: 240px; height: 240px;
+    background: radial-gradient(closest-side, rgba(240,90,34,.4), transparent 70%);
+  }
+  .verdict-left { z-index: 2; }
+  .verdict-left .eyebrow2 {
+    font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--vng-orange); margin-bottom: 4px;
+  }
+  .verdict-left h3 {
+    font-family: var(--font-display); font-size: 28px; text-transform: uppercase; letter-spacing: 0;
+    color: #fff; margin: 0 0 6px; line-height: 1;
+  }
+  .verdict-left p { font-size: 12px; color: rgba(255,255,255,.65); margin: 0; line-height: 1.5; }
+  .verdict-btns { display: flex; gap: 10px; z-index: 2; flex-shrink: 0; }
+  .verdict-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,.2); background: transparent;
+    color: rgba(255,255,255,.6); font-family: var(--font-body); font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all .15s ease;
+  }
+  .verdict-btn i { width: 16px; height: 16px; }
+  .verdict-btn:hover { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.9); }
+  .verdict-btn.active-hire { background: #059669; border-color: #059669; color: #fff; box-shadow: 0 4px 14px rgba(5,150,105,.4); }
+  .verdict-btn.active-hold { background: #D97706; border-color: #D97706; color: #fff; box-shadow: 0 4px 14px rgba(217,119,6,.4); }
+  .verdict-btn.active-reject { background: #DC2626; border-color: #DC2626; color: #fff; box-shadow: 0 4px 14px rgba(220,38,38,.4); }
+
+  /* ── TRACK SWITCH ── */
+  #px-track { display: none; }
+  #mkt-track { display: block; }
+
+  /* ── PRINT ── */
+  @media print {
+    @page { size: A4 portrait; margin: 14mm 14mm 14mm 14mm; }
+    html, body { background: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .toolbar { display: none !important; }
+    .page-wrap { max-width: 100% !important; padding: 0 !important; }
+    .form-header { -webkit-print-color-adjust: exact; }
+    .score-btn:not(.active) { opacity: .4 !important; }
+    .verdict-btn:not([class*="active"]) { opacity: .3 !important; }
+    .card { box-shadow: none !important; border: 1px solid var(--gray-200) !important; break-inside: avoid; }
+    .verdict-block { break-inside: avoid; }
+    .page-break { break-before: page; }
+  }
+</style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- Thanh công cụ (Ẩn khi in) -->
-    <div class="no-print sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-orange-500 text-white p-1.5 rounded-md">
-                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-gray-900 leading-tight">VNGGames NextGen</h1>
-                    <p class="text-xs text-gray-500 font-medium">Hệ thống Đánh giá Ứng viên</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <button onclick="resetForm()" class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition">
-                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Làm mới
-                </button>
-                <button id="submitBtn" onclick="submitForm()" class="flex items-center gap-2 px-4 py-1.5 text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 rounded-md shadow-sm transition disabled:opacity-70 disabled:cursor-not-allowed">
-                    <i data-lucide="send" class="w-4 h-4"></i> Gửi phiếu (Submit)
-                </button>
-            </div>
-        </div>
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="toolbar-brand"><i data-lucide="gamepad-2"></i></div>
+    <div class="toolbar-title">
+      <h1>VNGGames NextGen</h1>
+      <p>Hệ thống Đánh giá Ứng viên</p>
+    </div>
+    <div class="save-badge" id="saveBadge">Chưa lưu</div>
+  </div>
+  <div class="toolbar-right">
+    <button class="tbtn danger" onclick="resetForm()">
+      <i data-lucide="rotate-ccw"></i> Làm mới
+    </button>
+    <button class="tbtn" onclick="window.print()">
+      <i data-lucide="printer"></i> In / PDF
+    </button>
+    <button class="tbtn primary" id="submitBtn" onclick="submitForm()">
+      <i data-lucide="send"></i> Gửi phiếu (Submit)
+    </button>
+  </div>
+</div>
+
+<!-- PAGE WRAP -->
+<main class="page-wrap">
+
+  <!-- HEADER CARD -->
+  <div class="card">
+    <div class="form-header">
+      <div class="inner">
+        <div class="eyebrow"><i data-lucide="lock"></i> BẢO MẬT · CHỈ DÀNH CHO HỘI ĐỒNG TUYỂN DỤNG</div>
+        <h2>Phiếu Chấm<span class="y">Phỏng Vấn 1:1</span></h2>
+        <div class="form-tag"><span></span> VNGGames NextGen 2026 · MKT & Player Experience</div>
+      </div>
     </div>
 
-    <!-- Nội dung Phiếu -->
-    <main class="max-w-5xl mx-auto py-8 px-4 print-p-0 print-max-w-full">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 print-border-none overflow-hidden">
-            
-            <!-- Header Tiêu đề -->
-            <div class="border-b border-gray-200 p-8 pb-6 text-center">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2 uppercase tracking-wide">Phiếu Chấm Điểm Phỏng Vấn 1:1</h2>
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full border border-red-100">
-                    <i data-lucide="lock" class="w-3 h-3"></i>
-                    BẢO MẬT · CHỈ DÀNH CHO HỘI ĐỒNG TUYỂN DỤNG
-                </div>
-            </div>
-
-            <!-- Thông tin ứng viên -->
-            <div class="p-8 border-b border-gray-200 bg-gray-50">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tên ứng viên</label>
-                        <input type="text" data-field="candidateName" placeholder="Họ và tên đầy đủ..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Mã ứng viên</label>
-                        <input type="text" data-field="candidateId" placeholder="VD: MKT-001" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Domain Người Phỏng Vấn</label>
-                        <input type="text" data-field="interviewer" placeholder="VD: thanglx, minhlth, etc." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Ngày phỏng vấn</label>
-                            <input type="date" data-field="interviewDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vị trí ứng tuyển</label>
-                            <select id="positionSelect" data-field="position" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-medium">
-                                <option value="Marketing">Marketing</option>
-                                <option value="Player Experience">Player Experience</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Thang điểm hướng dẫn -->
-            <div class="px-8 py-5 border-b border-gray-200">
-                <h3 class="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Thang Điểm:</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center border border-red-200">1</span> <span class="text-sm text-gray-600 font-medium">Red Flag</span></div>
-                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-orange-100 text-orange-700 text-sm font-bold flex items-center justify-center border border-orange-200">2</span> <span class="text-sm text-gray-600 font-medium">Nearly Meet</span></div>
-                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-green-100 text-green-700 text-sm font-bold flex items-center justify-center border border-green-200">3</span> <span class="text-sm text-gray-600 font-medium">Meet Expectation</span></div>
-                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-blue-100 text-blue-700 text-sm font-bold flex items-center justify-center border border-blue-200">4</span> <span class="text-sm text-gray-600 font-medium">Exceed Expectation</span></div>
-                </div>
-            </div>
-
-            <!-- BẢNG ĐÁNH GIÁ -->
-            <div class="p-8">
-                
-                <!-- TIÊU CHÍ 1: VĂN HÓA -->
-                <div class="mb-10">
-                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
-                        <i data-lucide="users" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 1 · Phù hợp Văn hóa</h3>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <!-- Culture Row 1 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">COLLABORATION</p>
-                                <p class="text-xs text-gray-500 mt-1">Effective Communication<br>Emotional Intelligence</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="c_collab_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Culture Row 2 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">HONORING OUR WORDS</p>
-                                <p class="text-xs text-gray-500 mt-1">Time Management<br>Goal Setting<br>Self-Discipline</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="c_honor_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Culture Row 3 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">OWNERSHIP</p>
-                                <p class="text-xs text-gray-500 mt-1">Problem Solving<br>Learn How to Learn</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="c_owner_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Culture Row 4 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">GROWTH MINDSET</p>
-                                <p class="text-xs text-gray-500 mt-1">Adaptability<br>Resilience<br>Curiosity</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="c_growth_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="page-break"></div>
-
-                <!-- TIÊU CHÍ 2: GAME PASSION -->
-                <div class="mb-10">
-                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
-                        <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 2 · Game Passion</h3>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                        <div class="md:col-span-3">
-                            <p class="font-bold text-gray-900">Gaming Passion</p>
-                            <p class="text-xs text-gray-500 mt-1">Hiểu game, hiểu ngành, theo dõi xu hướng.</p>
-                        </div>
-                        <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="1">1</button>
-                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="2">2</button>
-                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="3">3</button>
-                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="4">4</button>
-                        </div>
-                        <div class="md:col-span-6">
-                            <textarea data-comment="p_gaming_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KHU VỰC TIÊU CHÍ 3 (ĐƯỢC CHUYỂN ĐỔI BẰNG JAVASCRIPT) -->
-                
-                <!-- TRACK 1: MARKETING KNOWLEDGE -->
-                <div id="mkt-track" class="mb-10 block">
-                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
-                        <i data-lucide="briefcase" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (Marketing)</h3>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <!-- Func Row 1 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Marketing & User Acquisition</p>
-                                <p class="text-xs text-gray-500 mt-1">Hiểu channel, CPA/CPI, đánh giá hiệu quả.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_mkt_ua_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Func Row 2 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Brand / Community</p>
-                                <p class="text-xs text-gray-500 mt-1">Xây dựng brand voice, quản lý cộng đồng, KOL, xử lý khủng hoảng.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_brand_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Func Row 3 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Data & Analytical Thinking</p>
-                                <p class="text-xs text-gray-500 mt-1">Đọc data, đặt hypothesis, A/B test, diễn giải metric.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_data_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Func Row 4 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Execution & Project Mgmt</p>
-                                <p class="text-xs text-gray-500 mt-1">Lên kế hoạch, cross-team, ship đúng hạn, xử lý sự cố.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TRACK 2: PX KNOWLEDGE -->
-                <div id="px-track" class="mb-10 hidden">
-                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
-                        <i data-lucide="headset" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (Player Experience)</h3>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <!-- PX Row 1 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Player Empathy & Support</p>
-                                <p class="text-xs text-gray-500 mt-1">Thấu hiểu tâm lý người chơi, hành vi in-game, xác định pain-points.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_empathy" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_px_empathy_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- PX Row 2 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Customer Support & Ops</p>
-                                <p class="text-xs text-gray-500 mt-1">Quy trình xử lý khiếu nại, ticket, VIP care, quản lý SLAs.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_ops" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_px_ops_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- PX Row 3 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Data & Analytical Thinking</p>
-                                <p class="text-xs text-gray-500 mt-1">Đọc data, phân tích feedback/CSAT, diễn giải metric thành action.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_data" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_px_data_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- PX Row 4 -->
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <div class="md:col-span-3">
-                                <p class="font-bold text-gray-900">Execution & Project Mgmt</p>
-                                <p class="text-xs text-gray-500 mt-1">Lên kế hoạch, phối hợp cross-team, ship đúng hạn, xử lý sự cố.</p>
-                            </div>
-                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="1">1</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="2">2</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="3">3</button>
-                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_px_exec" data-val="4">4</button>
-                            </div>
-                            <div class="md:col-span-6">
-                                <textarea data-comment="f_px_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="page-break"></div>
-
-                <!-- TỔNG KẾT & QUYẾT ĐỊNH -->
-                <div class="bg-gray-100 -mx-8 -mb-8 p-8 border-t border-gray-200">
-                    <div class="flex items-center gap-2 mb-6">
-                        <i data-lucide="clipboard-check" class="w-5 h-5 text-gray-700"></i>
-                        <h3 class="text-lg font-bold text-gray-900 uppercase">Đánh giá chung & Quyết định</h3>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Điểm mạnh / Ấn tượng tốt</label>
-                            <textarea data-comment="overall_strengths" placeholder="Liệt kê những điểm tích cực nhất..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white h-24"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Điểm cần cải thiện / Rủi ro (Red flags)</label>
-                            <textarea data-comment="overall_weaknesses" placeholder="Liệt kê những điểm đáng lo ngại..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white h-24"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-lg border border-gray-200 text-center">
-                        <label class="block text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider">Kết luận vòng phỏng vấn</label>
-                        <div class="flex flex-wrap justify-center gap-4">
-                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="hire">
-                                <i data-lucide="thumbs-up" class="w-5 h-5"></i> Đồng ý (Hire)
-                            </button>
-                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="hold">
-                                <i data-lucide="pause-circle" class="w-5 h-5"></i> Cân nhắc (Hold)
-                            </button>
-                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="reject">
-                                <i data-lucide="thumbs-down" class="w-5 h-5"></i> Từ chối (No Hire)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+    <!-- CANDIDATE INFO -->
+    <div class="candidate-grid">
+      <div>
+        <label class="field-label">Tên ứng viên</label>
+        <input class="field-input" type="text" data-field="candidateName" placeholder="Họ và tên đầy đủ...">
+      </div>
+      <div>
+        <label class="field-label">Mã ứng viên</label>
+        <input class="field-input" type="text" data-field="candidateId" placeholder="VD: MKT-001">
+      </div>
+      <div>
+        <label class="field-label">Domain Người Phỏng Vấn</label>
+        <input class="field-input" type="text" data-field="interviewer" placeholder="VD: thanglx, minhlth...">
+      </div>
+      <div class="sub-grid">
+        <div>
+          <label class="field-label">Ngày phỏng vấn</label>
+          <input class="field-input" type="date" data-field="interviewDate">
         </div>
-    </main>
+        <div>
+          <label class="field-label">Vị trí ứng tuyển</label>
+          <select class="field-input" id="positionSelect" data-field="position">
+            <option value="Marketing">Marketing</option>
+            <option value="Player Experience">Player Experience</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // Khởi tạo các icons của Lucide
+    <!-- SCALE LEGEND -->
+    <div class="scale-legend">
+      <div style="font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gray-500); align-self:center; margin-right:4px">Thang điểm:</div>
+      <div class="scale-item"><div class="scale-chip s1">1</div><span>Red Flag</span></div>
+      <div class="scale-item"><div class="scale-chip s2">2</div><span>Nearly Meet</span></div>
+      <div class="scale-item"><div class="scale-chip s3">3</div><span>Meet Expectation</span></div>
+      <div class="scale-item"><div class="scale-chip s4">4</div><span>Exceed Expectation</span></div>
+    </div>
+  </div>
+
+  <!-- TIÊU CHÍ 1: VĂN HÓA -->
+  <div class="card">
+    <div class="section-head">
+      <i data-lucide="users"></i>
+      <h3>Tiêu chí 1 · Phù hợp Văn hóa</h3>
+    </div>
+    <div class="criteria-section">
+
+      <div class="criteria-row">
+        <div><div class="crit-name">COLLABORATION</div><div class="crit-sub">Effective Communication<br>Emotional Intelligence</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="c_collab" data-val="1">1</button>
+          <button class="score-btn" data-group="c_collab" data-val="2">2</button>
+          <button class="score-btn" data-group="c_collab" data-val="3">3</button>
+          <button class="score-btn" data-group="c_collab" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="c_collab_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">HONORING OUR WORDS</div><div class="crit-sub">Time Management<br>Goal Setting · Self-Discipline</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="c_honor" data-val="1">1</button>
+          <button class="score-btn" data-group="c_honor" data-val="2">2</button>
+          <button class="score-btn" data-group="c_honor" data-val="3">3</button>
+          <button class="score-btn" data-group="c_honor" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="c_honor_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">OWNERSHIP</div><div class="crit-sub">Problem Solving<br>Learn How to Learn</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="c_owner" data-val="1">1</button>
+          <button class="score-btn" data-group="c_owner" data-val="2">2</button>
+          <button class="score-btn" data-group="c_owner" data-val="3">3</button>
+          <button class="score-btn" data-group="c_owner" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="c_owner_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">GROWTH MINDSET</div><div class="crit-sub">Adaptability · Resilience<br>Curiosity</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="c_growth" data-val="1">1</button>
+          <button class="score-btn" data-group="c_growth" data-val="2">2</button>
+          <button class="score-btn" data-group="c_growth" data-val="3">3</button>
+          <button class="score-btn" data-group="c_growth" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="c_growth_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- TIÊU CHÍ 2: GAME PASSION -->
+  <div class="card">
+    <div class="section-head">
+      <i data-lucide="heart"></i>
+      <h3>Tiêu chí 2 · Game Passion</h3>
+    </div>
+    <div class="criteria-section">
+      <div class="criteria-row">
+        <div><div class="crit-name">Gaming Passion</div><div class="crit-sub">Hiểu game, hiểu ngành,<br>theo dõi xu hướng.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="p_gaming" data-val="1">1</button>
+          <button class="score-btn" data-group="p_gaming" data-val="2">2</button>
+          <button class="score-btn" data-group="p_gaming" data-val="3">3</button>
+          <button class="score-btn" data-group="p_gaming" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="p_gaming_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIÊU CHÍ 3: FUNCTIONAL KNOWLEDGE — MKT -->
+  <div class="card" id="mkt-track">
+    <div class="section-head">
+      <i data-lucide="briefcase"></i>
+      <h3>Tiêu chí 3 · Functional Knowledge (Marketing)</h3>
+    </div>
+    <div class="criteria-section">
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Marketing & User Acquisition</div><div class="crit-sub">Hiểu channel, CPA/CPI,<br>đánh giá hiệu quả.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_mkt_ua" data-val="1">1</button>
+          <button class="score-btn" data-group="f_mkt_ua" data-val="2">2</button>
+          <button class="score-btn" data-group="f_mkt_ua" data-val="3">3</button>
+          <button class="score-btn" data-group="f_mkt_ua" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_mkt_ua_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Brand / Community</div><div class="crit-sub">Xây dựng brand voice,<br>quản lý cộng đồng, KOL,<br>xử lý khủng hoảng.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_brand" data-val="1">1</button>
+          <button class="score-btn" data-group="f_brand" data-val="2">2</button>
+          <button class="score-btn" data-group="f_brand" data-val="3">3</button>
+          <button class="score-btn" data-group="f_brand" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_brand_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Data & Analytical Thinking</div><div class="crit-sub">Đọc data, hypothesis,<br>A/B test, metric.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_data" data-val="1">1</button>
+          <button class="score-btn" data-group="f_data" data-val="2">2</button>
+          <button class="score-btn" data-group="f_data" data-val="3">3</button>
+          <button class="score-btn" data-group="f_data" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_data_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Execution & Project Mgmt</div><div class="crit-sub">Lên kế hoạch, cross-team,<br>ship đúng hạn, xử lý sự cố.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_exec" data-val="1">1</button>
+          <button class="score-btn" data-group="f_exec" data-val="2">2</button>
+          <button class="score-btn" data-group="f_exec" data-val="3">3</button>
+          <button class="score-btn" data-group="f_exec" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIÊU CHÍ 3: FUNCTIONAL KNOWLEDGE — PX -->
+  <div class="card" id="px-track">
+    <div class="section-head">
+      <i data-lucide="headset"></i>
+      <h3>Tiêu chí 3 · Functional Knowledge (Player Experience)</h3>
+    </div>
+    <div class="criteria-section">
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Player Empathy & Support</div><div class="crit-sub">Thấu hiểu tâm lý người chơi,<br>hành vi in-game, pain-points.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_px_empathy" data-val="1">1</button>
+          <button class="score-btn" data-group="f_px_empathy" data-val="2">2</button>
+          <button class="score-btn" data-group="f_px_empathy" data-val="3">3</button>
+          <button class="score-btn" data-group="f_px_empathy" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_px_empathy_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Customer Support & Ops</div><div class="crit-sub">Quy trình xử lý khiếu nại,<br>ticket, VIP care, SLAs.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_px_ops" data-val="1">1</button>
+          <button class="score-btn" data-group="f_px_ops" data-val="2">2</button>
+          <button class="score-btn" data-group="f_px_ops" data-val="3">3</button>
+          <button class="score-btn" data-group="f_px_ops" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_px_ops_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Data & Analytical Thinking</div><div class="crit-sub">Đọc data, CSAT,<br>metric → action.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_px_data" data-val="1">1</button>
+          <button class="score-btn" data-group="f_px_data" data-val="2">2</button>
+          <button class="score-btn" data-group="f_px_data" data-val="3">3</button>
+          <button class="score-btn" data-group="f_px_data" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_px_data_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+      <div class="criteria-row">
+        <div><div class="crit-name">Execution & Project Mgmt</div><div class="crit-sub">Lên kế hoạch, cross-team,<br>ship đúng hạn, xử lý sự cố.</div></div>
+        <div class="score-btns">
+          <button class="score-btn" data-group="f_px_exec" data-val="1">1</button>
+          <button class="score-btn" data-group="f_px_exec" data-val="2">2</button>
+          <button class="score-btn" data-group="f_px_exec" data-val="3">3</button>
+          <button class="score-btn" data-group="f_px_exec" data-val="4">4</button>
+        </div>
+        <textarea class="criteria-note" data-comment="f_px_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- OVERALL & VERDICT -->
+  <div class="card">
+    <div class="section-head">
+      <i data-lucide="clipboard-check"></i>
+      <h3>Đánh giá chung &amp; Quyết định</h3>
+    </div>
+    <div class="overall-grid">
+      <div>
+        <label class="overall-label">Điểm mạnh / Ấn tượng tốt</label>
+        <textarea class="overall-textarea" data-comment="overall_strengths" placeholder="Liệt kê những điểm tích cực nhất..."></textarea>
+      </div>
+      <div>
+        <label class="overall-label">Điểm cần cải thiện / Rủi ro (Red flags)</label>
+        <textarea class="overall-textarea" data-comment="overall_weaknesses" placeholder="Liệt kê những điểm đáng lo ngại..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERDICT BLOCK -->
+  <div class="verdict-block">
+    <div class="verdict-left">
+      <div class="eyebrow2">Kết luận vòng phỏng vấn</div>
+      <h3>Quyết định cuối cùng</h3>
+      <p>Dựa trên toàn bộ bằng chứng quan sát trong buổi phỏng vấn này.</p>
+    </div>
+    <div class="verdict-btns">
+      <button class="verdict-btn" data-verdict="hire">
+        <i data-lucide="thumbs-up"></i> Đồng ý (Hire)
+      </button>
+      <button class="verdict-btn" data-verdict="hold">
+        <i data-lucide="pause-circle"></i> Cân nhắc (Hold)
+      </button>
+      <button class="verdict-btn" data-verdict="reject">
+        <i data-lucide="thumbs-down"></i> Từ chối (No Hire)
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER STAMP -->
+  <div style="text-align:center; padding: 12px 0 4px;">
+    <span style="font-family: var(--font-mono); font-size: 10px; letter-spacing:.14em; text-transform:uppercase; color: var(--gray-300);">
+      FORM TA-IS-01 · REV. MAY 2026 · VNGGames Talent Acquisition · Confidential
+    </span>
+  </div>
+
+</main>
+
+<script>
+  lucide.createIcons();
+
+  const STORAGE_KEY = 'vng_scorecard_mkt_v2';
+  const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbxEBjDw9kSq8l3HQT_CiZOebAb9MFdZ07TZAt6kvvScWOI-s8v7wa8oScY1JGPSoTC9ig/exec';
+
+  let state = { fields: {}, scores: {}, comments: {}, verdict: '' };
+
+  // ── Persist ──────────────────────────────────────────────────────
+  function persist() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const badge = document.getElementById('saveBadge');
+    badge.textContent = 'Đã lưu · ' + new Date().toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'});
+    badge.classList.add('saved');
+  }
+
+  // ── Track toggle ──────────────────────────────────────────────────
+  function toggleTrack() {
+    const pos = document.getElementById('positionSelect').value;
+    document.getElementById('mkt-track').style.display = pos === 'Marketing' ? 'block' : 'none';
+    document.getElementById('px-track').style.display  = pos === 'Player Experience' ? 'block' : 'none';
+  }
+  document.getElementById('positionSelect').addEventListener('change', () => {
+    state.fields.position = document.getElementById('positionSelect').value;
+    persist();
+    toggleTrack();
+  });
+
+  // ── Load state ────────────────────────────────────────────────────
+  function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      try { state = JSON.parse(raw); } catch(e) {}
+    }
+    document.querySelectorAll('[data-field]').forEach(el => {
+      if (state.fields[el.dataset.field] !== undefined) el.value = state.fields[el.dataset.field];
+    });
+    toggleTrack();
+    document.querySelectorAll('[data-comment]').forEach(el => {
+      if (state.comments[el.dataset.comment]) el.value = state.comments[el.dataset.comment];
+    });
+    Object.keys(state.scores || {}).forEach(group => {
+      const val = state.scores[group];
+      const btn = document.querySelector(`.score-btn[data-group="${group}"][data-val="${val}"]`);
+      if (btn) btn.classList.add('active');
+    });
+    if (state.verdict) {
+      const btn = document.querySelector(`.verdict-btn[data-verdict="${state.verdict}"]`);
+      if (btn) btn.classList.add('active-' + state.verdict);
+    }
+    if (raw) {
+      document.getElementById('saveBadge').textContent = 'Đã lưu trước đó';
+      document.getElementById('saveBadge').classList.add('saved');
+    }
+  }
+
+  // ── Bind inputs ───────────────────────────────────────────────────
+  document.querySelectorAll('[data-field]').forEach(el => {
+    el.addEventListener('input', () => { state.fields[el.dataset.field] = el.value; persist(); });
+  });
+  document.querySelectorAll('[data-comment]').forEach(el => {
+    el.addEventListener('input', () => { state.comments[el.dataset.comment] = el.value; persist(); });
+  });
+  document.querySelectorAll('.score-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      document.querySelectorAll(`.score-btn[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.scores[group] = btn.dataset.val;
+      persist();
+    });
+  });
+  document.querySelectorAll('.verdict-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.verdict-btn').forEach(b => b.classList.remove('active-hire','active-hold','active-reject'));
+      btn.classList.add('active-' + btn.dataset.verdict);
+      state.verdict = btn.dataset.verdict;
+      persist();
+    });
+  });
+
+  // ── Reset ─────────────────────────────────────────────────────────
+  function resetForm() {
+    if (!confirm('Bạn có chắc chắn muốn xóa TẤT CẢ thông tin? Hành động này không thể hoàn tác.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+
+  // ── Submit → Google Sheets ────────────────────────────────────────
+  async function submitForm() {
+    const btn = document.getElementById('submitBtn');
+    if (!state.fields.candidateName || !state.fields.candidateId) {
+      alert('Vui lòng điền Tên và Mã ứng viên trước khi Submit!');
+      document.querySelector('[data-field="candidateName"]')?.focus();
+      return;
+    }
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4"></i> Đang gửi...';
+    btn.disabled = true;
+    lucide.createIcons();
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      ...state.fields,
+      ...state.scores,
+      ...state.comments,
+      verdict: state.verdict
+    };
+
+    try {
+      await fetch(WEBAPP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      btn.innerHTML = '<i data-lucide="check"></i> Đã gửi thành công!';
+      btn.className = 'tbtn success';
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.className = 'tbtn primary';
+        btn.disabled = false;
         lucide.createIcons();
+      }, 3500);
+    } catch(err) {
+      console.error(err);
+      alert('Có lỗi xảy ra khi gửi dữ liệu. Vui lòng thử lại!');
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      lucide.createIcons();
+    }
+  }
 
-        const STORAGE_KEY = 'vng_scorecard_mkt_state';
-        let state = {
-            fields: {},
-            scores: {},
-            comments: {},
-            verdict: ''
-        };
-
-        // Hàm ẩn/hiện Track MKT hoặc PX dựa trên Dropdown Vị trí
-        function toggleTrackVisibility() {
-            const pos = document.getElementById('positionSelect').value;
-            const mktTrack = document.getElementById('mkt-track');
-            const pxTrack = document.getElementById('px-track');
-            
-            if (pos === 'Marketing') {
-                mktTrack.classList.remove('hidden');
-                mktTrack.classList.add('block');
-                pxTrack.classList.remove('block');
-                pxTrack.classList.add('hidden');
-            } else if (pos === 'Player Experience') {
-                mktTrack.classList.remove('block');
-                mktTrack.classList.add('hidden');
-                pxTrack.classList.remove('hidden');
-                pxTrack.classList.add('block');
-            }
-        }
-
-        // Lắng nghe sự kiện thay đổi trên dropdown Vị trí
-        document.getElementById('positionSelect').addEventListener('change', (e) => {
-            toggleTrackVisibility();
-        });
-
-        // Load dữ liệu từ LocalStorage
-        function loadState() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                try {
-                    state = JSON.parse(saved);
-                } catch (e) {
-                    console.error('Không thể đọc dữ liệu cũ:', e);
-                }
-            }
-
-            // Phục hồi Fields
-            document.querySelectorAll('[data-field]').forEach(el => {
-                if (state.fields[el.dataset.field]) {
-                    el.value = state.fields[el.dataset.field];
-                }
-            });
-
-            // Gọi logic toggleTrack sau khi phục hồi select value
-            toggleTrackVisibility();
-
-            // Phục hồi Comments
-            document.querySelectorAll('[data-comment]').forEach(el => {
-                if (state.comments[el.dataset.comment]) {
-                    el.value = state.comments[el.dataset.comment];
-                }
-            });
-
-            // Phục hồi Scores
-            Object.keys(state.scores).forEach(group => {
-                const val = state.scores[group];
-                const btn = document.querySelector(`.score-btn[data-group="${group}"][data-val="${val}"]`);
-                if (btn) btn.classList.add('active');
-            });
-
-            // Phục hồi Verdict
-            if (state.verdict) {
-                const btn = document.querySelector(`.verdict-btn[data-verdict="${state.verdict}"]`);
-                if (btn) {
-                    if(state.verdict === 'hire') btn.classList.add('active-hire');
-                    else if(state.verdict === 'hold') btn.classList.add('active-hold');
-                    else if(state.verdict === 'reject') btn.classList.add('active-reject');
-                    else btn.classList.add('active');
-                }
-            }
-        }
-
-        // Lưu State vào LocalStorage
-        function persist() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        }
-
-        // Gắn các Event Listeners
-        document.querySelectorAll('[data-field]').forEach(el => {
-            el.addEventListener('input', (e) => {
-                state.fields[e.target.dataset.field] = e.target.value;
-                persist();
-            });
-        });
-
-        document.querySelectorAll('[data-comment]').forEach(el => {
-            el.addEventListener('input', (e) => {
-                state.comments[e.target.dataset.comment] = e.target.value;
-                persist();
-            });
-        });
-
-        document.querySelectorAll('.score-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault(); // Ngăn hành vi mặc định nếu nằm trong form
-                const group = btn.dataset.group;
-                const val = btn.dataset.val;
-
-                // Xóa trạng thái active của các nút cùng group
-                document.querySelectorAll(`.score-btn[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
-                
-                // Active nút hiện tại
-                btn.classList.add('active');
-                
-                // Lưu vào state
-                state.scores[group] = val;
-                persist();
-            });
-        });
-
-        document.querySelectorAll('.verdict-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Reset toàn bộ style quyết định
-                document.querySelectorAll('.verdict-btn').forEach(b => {
-                    b.classList.remove('active', 'active-hire', 'active-hold', 'active-reject');
-                });
-                
-                const verdict = btn.dataset.verdict;
-                
-                if(verdict === 'hire') btn.classList.add('active-hire');
-                else if(verdict === 'hold') btn.classList.add('active-hold');
-                else if(verdict === 'reject') btn.classList.add('active-reject');
-
-                state.verdict = verdict;
-                persist();
-            });
-        });
-
-        // Hàm Xóa Form
-        function resetForm() {
-            if (!confirm('Bạn có chắc chắn muốn xóa TẤT CẢ thông tin trên phiếu này? Hành động này không thể hoàn tác.')) return;
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        }
-
-        // Hàm Submit lên Google Sheets
-        async function submitForm() {
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.innerHTML;
-
-            // Kiểm tra thông tin bắt buộc
-            if (!state.fields.candidateName || !state.fields.candidateId) {
-                alert('Vui lòng điền Tên và Mã ứng viên trước khi Submit!');
-                const nameInput = document.querySelector('[data-field="candidateName"]');
-                if(nameInput) nameInput.focus();
-                return;
-            }
-
-            // Đổi UI sang trạng thái Đang gửi
-            submitBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Đang gửi...';
-            submitBtn.disabled = true;
-            lucide.createIcons();
-
-            // Tổng hợp payload
-            const payload = {
-                timestamp: new Date().toISOString(),
-                ...state.fields,
-                ...state.scores,
-                ...state.comments,
-                verdict: state.verdict
-            };
-
-            // THAY ĐƯỜNG LINK GOOGLE APPS SCRIPT WEB APP CỦA BẠN VÀO ĐÂY
-            const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxEBjDw9kSq8l3HQT_CiZOebAb9MFdZ07TZAt6kvvScWOI-s8v7wa8oScY1JGPSoTC9ig/exec';
-
-            try {
-                if (WEBAPP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE') {
-                    // Demo mode (Giả lập thời gian gửi)
-                    await new Promise(r => setTimeout(r, 1200));
-                    console.log('Dữ liệu chuẩn bị gửi đi:', payload);
-                    alert('Đây là bản demo!\n\nHãy thay thế WEBAPP_URL trong mã HTML bằng link Google Apps Script của bạn để kết nối với Google Sheets.\n\nĐã log dữ liệu ra Console (F12).');
-                } else {
-                    // Gửi dữ liệu thật
-                    await fetch(WEBAPP_URL, {
-                        method: 'POST',
-                        mode: 'no-cors', // Sử dụng no-cors để tránh lỗi CORS policy từ phía browser khi gọi Google Script
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                }
-                
-                // Trạng thái thành công
-                submitBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Đã gửi thành công';
-                submitBtn.classList.replace('bg-gray-900', 'bg-green-600');
-                submitBtn.classList.replace('hover:bg-gray-800', 'hover:bg-green-700');
-                lucide.createIcons();
-                
-                // Reset nút bấm sau 3 giây
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.classList.replace('bg-green-600', 'bg-gray-900');
-                    submitBtn.classList.replace('hover:bg-green-700', 'hover:bg-gray-800');
-                    lucide.createIcons();
-                }, 3000);
-
-            } catch (error) {
-                console.error('Lỗi khi gửi dữ liệu:', error);
-                alert('Có lỗi xảy ra khi gửi dữ liệu lên máy chủ. Vui lòng thử lại!');
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                lucide.createIcons();
-            }
-        }
-
-        // Khởi chạy khi load trang
-        loadState();
-        
-        // Mặc định chọn vị trí Marketing nếu chưa có
-        if(!state.fields.position) {
-            const posSelect = document.querySelector('[data-field="position"]');
-            posSelect.value = "Marketing";
-            state.fields.position = "Marketing";
-            persist();
-            toggleTrackVisibility();
-        }
-    </script>
+  // ── Init ──────────────────────────────────────────────────────────
+  loadState();
+  if (!state.fields.position) {
+    document.getElementById('positionSelect').value = 'Marketing';
+    state.fields.position = 'Marketing';
+    persist();
+    toggleTrack();
+  }
+</script>
 </body>
 </html>
