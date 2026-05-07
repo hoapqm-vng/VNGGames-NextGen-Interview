@@ -4,19 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phiếu Chấm Điểm Phỏng Vấn · VNGGames NextGen 2026</title>
-<link rel="stylesheet" href="../colors_and_type.css">
+
+<!-- Google Fonts — replaces the font definitions from colors_and_type.css -->
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
+  /* ── Inlined brand tokens (replaces ../colors_and_type.css) ────────
+     Without this block GitHub Pages has no --vng-orange / --font-body
+     and the whole design goes grey/unstyled.                        */
   :root {
-    --paper: #FFFFFF;
-    --ink: #111827;
-    --gray-50: #F9FAFB;
-    --gray-100: #F3F4F6;
-    --gray-200: #E5E7EB;
-    --gray-300: #D1D5DB;
-    --gray-500: #6B7280;
-    --gray-700: #374151;
-    --gray-900: #111827;
+    --vng-orange:  #F05A22;
+    --vng-yellow:  #FAC30A;
+    --font-body:   'Inter Tight', system-ui, -apple-system, sans-serif;
+    --font-display:'Inter Tight', system-ui, -apple-system, sans-serif;
+    --font-mono:   'SF Mono', 'Fira Code', 'Consolas', monospace;
+
+    /* Grey palette */
+    --paper:      #FFFFFF;
+    --ink:        #111827;
+    --gray-50:    #F9FAFB;
+    --gray-100:   #F3F4F6;
+    --gray-200:   #E5E7EB;
+    --gray-300:   #D1D5DB;
+    --gray-500:   #6B7280;
+    --gray-700:   #374151;
+    --gray-900:   #111827;
   }
 
   html, body {
@@ -43,7 +56,7 @@
   }
   .toolbar-brand i { width: 18px; height: 18px; }
   .toolbar-title h1 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin: 0; line-height: 1.2; }
-  .toolbar-title p { font-size: 11px; color: var(--gray-500); margin: 0; font-weight: 500; }
+  .toolbar-title p  { font-size: 11px; color: var(--gray-500); margin: 0; font-weight: 500; }
   .save-badge {
     font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--gray-500);
     padding: 4px 10px; background: var(--gray-100); border-radius: 999px;
@@ -60,9 +73,7 @@
   .tbtn:hover { background: var(--gray-50); border-color: var(--gray-300); }
   .tbtn i { width: 14px; height: 14px; }
   .tbtn.danger:hover { color: #DC2626; background: #FEF2F2; border-color: #FECACA; }
-  .tbtn.primary {
-    background: var(--gray-900); color: #fff; border-color: var(--gray-900);
-  }
+  .tbtn.primary { background: var(--gray-900); color: #fff; border-color: var(--gray-900); }
   .tbtn.primary:hover { background: #1F2937; }
   .tbtn.success { background: #059669; color: #fff; border-color: #059669; }
 
@@ -97,8 +108,8 @@
   }
   .form-header .eyebrow i { width: 12px; height: 12px; }
   .form-header h2 {
-    font-family: var(--font-display); font-size: 64px; font-weight: 400; text-transform: uppercase;
-    line-height: .95; letter-spacing: 0; color: #fff; margin: 12px 0 6px;
+    font-family: var(--font-display); font-size: 64px; font-weight: 800; text-transform: uppercase;
+    line-height: .95; letter-spacing: -.02em; color: #fff; margin: 12px 0 6px;
   }
   .form-header h2 .y { color: var(--vng-yellow); display: block; }
   .form-header .form-tag {
@@ -173,7 +184,7 @@
   }
   .criteria-row:last-child { margin-bottom: 0; }
   .crit-name { font-weight: 700; font-size: 13px; color: var(--gray-900); }
-  .crit-sub { font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.5; }
+  .crit-sub  { font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.5; }
   .score-btns { display: flex; gap: 6px; padding-top: 2px; flex-wrap: nowrap; flex-shrink: 0; }
   .score-btn {
     width: 38px; height: 38px; border-radius: 6px; border: 1px solid var(--gray-300);
@@ -228,8 +239,8 @@
     color: var(--vng-orange); margin-bottom: 4px;
   }
   .verdict-left h3 {
-    font-family: var(--font-display); font-size: 28px; text-transform: uppercase; letter-spacing: 0;
-    color: #fff; margin: 0 0 6px; line-height: 1;
+    font-family: var(--font-display); font-size: 28px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: -.01em; color: #fff; margin: 0 0 6px; line-height: 1;
   }
   .verdict-left p { font-size: 12px; color: rgba(255,255,255,.65); margin: 0; line-height: 1.5; }
   .verdict-btns { display: flex; gap: 10px; z-index: 2; flex-shrink: 0; }
@@ -242,22 +253,21 @@
   }
   .verdict-btn i { width: 16px; height: 16px; }
   .verdict-btn:hover { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.9); }
-  .verdict-btn.active-hire { background: #059669; border-color: #059669; color: #fff; box-shadow: 0 4px 14px rgba(5,150,105,.4); }
-  .verdict-btn.active-hold { background: #D97706; border-color: #D97706; color: #fff; box-shadow: 0 4px 14px rgba(217,119,6,.4); }
+  .verdict-btn.active-hire   { background: #059669; border-color: #059669; color: #fff; box-shadow: 0 4px 14px rgba(5,150,105,.4); }
+  .verdict-btn.active-hold   { background: #D97706; border-color: #D97706; color: #fff; box-shadow: 0 4px 14px rgba(217,119,6,.4); }
   .verdict-btn.active-reject { background: #DC2626; border-color: #DC2626; color: #fff; box-shadow: 0 4px 14px rgba(220,38,38,.4); }
 
   /* ── TRACK SWITCH ── */
-  #px-track { display: none; }
+  #px-track  { display: none; }
   #mkt-track { display: block; }
 
   /* ── PRINT ── */
   @media print {
-    @page { size: A4 portrait; margin: 14mm 14mm 14mm 14mm; }
+    @page { size: A4 portrait; margin: 14mm; }
     html, body { background: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     .toolbar { display: none !important; }
     .page-wrap { max-width: 100% !important; padding: 0 !important; }
-    .form-header { -webkit-print-color-adjust: exact; }
     .score-btn:not(.active) { opacity: .4 !important; }
     .verdict-btn:not([class*="active"]) { opacity: .3 !important; }
     .card { box-shadow: none !important; border: 1px solid var(--gray-200) !important; break-inside: avoid; }
@@ -350,7 +360,6 @@
       <h3>Tiêu chí 1 · Phù hợp Văn hóa</h3>
     </div>
     <div class="criteria-section">
-
       <div class="criteria-row">
         <div><div class="crit-name">COLLABORATION</div><div class="crit-sub">Effective Communication<br>Emotional Intelligence</div></div>
         <div class="score-btns">
@@ -361,7 +370,6 @@
         </div>
         <textarea class="criteria-note" data-comment="c_collab_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">HONORING OUR WORDS</div><div class="crit-sub">Time Management<br>Goal Setting · Self-Discipline</div></div>
         <div class="score-btns">
@@ -372,7 +380,6 @@
         </div>
         <textarea class="criteria-note" data-comment="c_honor_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">OWNERSHIP</div><div class="crit-sub">Problem Solving<br>Learn How to Learn</div></div>
         <div class="score-btns">
@@ -383,7 +390,6 @@
         </div>
         <textarea class="criteria-note" data-comment="c_owner_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">GROWTH MINDSET</div><div class="crit-sub">Adaptability · Resilience<br>Curiosity</div></div>
         <div class="score-btns">
@@ -394,7 +400,6 @@
         </div>
         <textarea class="criteria-note" data-comment="c_growth_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
     </div>
   </div>
 
@@ -427,7 +432,6 @@
       <h3>Tiêu chí 3 · Functional Knowledge (Marketing)</h3>
     </div>
     <div class="criteria-section">
-
       <div class="criteria-row">
         <div><div class="crit-name">Marketing & User Acquisition</div><div class="crit-sub">Hiểu channel, CPA/CPI,<br>đánh giá hiệu quả.</div></div>
         <div class="score-btns">
@@ -438,7 +442,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_mkt_ua_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Brand / Community</div><div class="crit-sub">Xây dựng brand voice,<br>quản lý cộng đồng, KOL,<br>xử lý khủng hoảng.</div></div>
         <div class="score-btns">
@@ -449,7 +452,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_brand_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Data & Analytical Thinking</div><div class="crit-sub">Đọc data, hypothesis,<br>A/B test, metric.</div></div>
         <div class="score-btns">
@@ -460,7 +462,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_data_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Execution & Project Mgmt</div><div class="crit-sub">Lên kế hoạch, cross-team,<br>ship đúng hạn, xử lý sự cố.</div></div>
         <div class="score-btns">
@@ -471,7 +472,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
     </div>
   </div>
 
@@ -482,7 +482,6 @@
       <h3>Tiêu chí 3 · Functional Knowledge (Player Experience)</h3>
     </div>
     <div class="criteria-section">
-
       <div class="criteria-row">
         <div><div class="crit-name">Player Empathy & Support</div><div class="crit-sub">Thấu hiểu tâm lý người chơi,<br>hành vi in-game, pain-points.</div></div>
         <div class="score-btns">
@@ -493,7 +492,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_px_empathy_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Customer Support & Ops</div><div class="crit-sub">Quy trình xử lý khiếu nại,<br>ticket, VIP care, SLAs.</div></div>
         <div class="score-btns">
@@ -504,7 +502,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_px_ops_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Data & Analytical Thinking</div><div class="crit-sub">Đọc data, CSAT,<br>metric → action.</div></div>
         <div class="score-btns">
@@ -515,7 +512,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_px_data_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
       <div class="criteria-row">
         <div><div class="crit-name">Execution & Project Mgmt</div><div class="crit-sub">Lên kế hoạch, cross-team,<br>ship đúng hạn, xử lý sự cố.</div></div>
         <div class="score-btns">
@@ -526,7 +522,6 @@
         </div>
         <textarea class="criteria-note" data-comment="f_px_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..."></textarea>
       </div>
-
     </div>
   </div>
 
@@ -558,15 +553,9 @@
       <p>Dựa trên toàn bộ bằng chứng quan sát trong buổi phỏng vấn này.</p>
     </div>
     <div class="verdict-btns">
-      <button class="verdict-btn" data-verdict="hire">
-        <i data-lucide="thumbs-up"></i> Đồng ý (Hire)
-      </button>
-      <button class="verdict-btn" data-verdict="hold">
-        <i data-lucide="pause-circle"></i> Cân nhắc (Hold)
-      </button>
-      <button class="verdict-btn" data-verdict="reject">
-        <i data-lucide="thumbs-down"></i> Từ chối (No Hire)
-      </button>
+      <button class="verdict-btn" data-verdict="hire"><i data-lucide="thumbs-up"></i> Đồng ý (Hire)</button>
+      <button class="verdict-btn" data-verdict="hold"><i data-lucide="pause-circle"></i> Cân nhắc (Hold)</button>
+      <button class="verdict-btn" data-verdict="reject"><i data-lucide="thumbs-down"></i> Từ chối (No Hire)</button>
     </div>
   </div>
 
@@ -591,11 +580,11 @@
   function persist() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     const badge = document.getElementById('saveBadge');
-    badge.textContent = 'Đã lưu · ' + new Date().toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'});
+    badge.textContent = 'Đã lưu · ' + new Date().toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
     badge.classList.add('saved');
   }
 
-  // ── Track toggle ──────────────────────────────────────────────────
+  // ── Track toggle ─────────────────────────────────────────────────
   function toggleTrack() {
     const pos = document.getElementById('positionSelect').value;
     document.getElementById('mkt-track').style.display = pos === 'Marketing' ? 'block' : 'none';
@@ -607,7 +596,7 @@
     toggleTrack();
   });
 
-  // ── Load state ────────────────────────────────────────────────────
+  // ── Load state ───────────────────────────────────────────────────
   function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -635,7 +624,7 @@
     }
   }
 
-  // ── Bind inputs ───────────────────────────────────────────────────
+  // ── Bind inputs ──────────────────────────────────────────────────
   document.querySelectorAll('[data-field]').forEach(el => {
     el.addEventListener('input', () => { state.fields[el.dataset.field] = el.value; persist(); });
   });
@@ -660,14 +649,14 @@
     });
   });
 
-  // ── Reset ─────────────────────────────────────────────────────────
+  // ── Reset ────────────────────────────────────────────────────────
   function resetForm() {
     if (!confirm('Bạn có chắc chắn muốn xóa TẤT CẢ thông tin? Hành động này không thể hoàn tác.')) return;
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
   }
 
-  // ── Submit → Google Sheets ────────────────────────────────────────
+  // ── Submit → Google Sheets ───────────────────────────────────────
   async function submitForm() {
     const btn = document.getElementById('submitBtn');
     if (!state.fields.candidateName || !state.fields.candidateId) {
@@ -676,7 +665,7 @@
       return;
     }
     const orig = btn.innerHTML;
-    btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4"></i> Đang gửi...';
+    btn.innerHTML = '<i data-lucide="loader-2"></i> Đang gửi...';
     btn.disabled = true;
     lucide.createIcons();
 
@@ -689,10 +678,11 @@
     };
 
     try {
+      // text/plain avoids the CORS preflight block that application/json triggers
       await fetch(WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       });
       btn.innerHTML = '<i data-lucide="check"></i> Đã gửi thành công!';
@@ -713,7 +703,7 @@
     }
   }
 
-  // ── Init ──────────────────────────────────────────────────────────
+  // ── Init ─────────────────────────────────────────────────────────
   loadState();
   if (!state.fields.position) {
     document.getElementById('positionSelect').value = 'Marketing';
