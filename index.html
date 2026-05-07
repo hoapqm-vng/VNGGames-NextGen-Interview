@@ -1,568 +1,571 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1:1 Interview Scorecard — VNGGames NextGen 2026</title>
-<script src="https://unpkg.com/lucide@latest"></script>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
-<style>
-  /* ── Inlined brand tokens (replaces colors_and_type.css) ── */
-  :root {
-    --vng-orange:       #F05A22;
-    --vng-yellow:       #FAC30A;
-    --vng-black-95:     rgba(13,13,13,.95);
-    --vng-neon-inferno: #C10024;
-    --accent-hover:     #D04A15;
-    --font-body:        'Inter Tight', system-ui, sans-serif;
-    --font-display:     'Inter Tight', system-ui, sans-serif;
-    --font-mono:        'SF Mono', 'Fira Code', monospace;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Chấm Điểm Phỏng Vấn - MKT | VNGGames NextGen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
 
-    --paper:       #FBFAF6;
-    --ink:         #0D0D0D;
-    --line:        rgba(13,13,13,.14);
-    --line-strong: rgba(13,13,13,.28);
-  }
+        /* Tùy chỉnh thanh cuộn cho textareas */
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
 
-  html, body { margin: 0; padding: 0; background: #2A2725; font-family: var(--font-body); color: var(--ink); }
+        /* Ẩn các phần tử không cần thiết khi in */
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .print-border-none { border: none !important; box-shadow: none !important; }
+            .print-p-0 { padding: 0 !important; }
+            .print-max-w-full { max-width: 100% !important; }
+            textarea { border: 1px solid #e5e7eb !important; overflow: hidden; }
+            .score-btn { border: 1px solid #d1d5db; }
+            .score-btn.active { border-color: #f97316; background-color: #fff7ed; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .verdict-btn.active { background-color: #f3f4f6; border-color: #374151; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page-break { page-break-before: always; }
+        }
 
-  /* ── Toolbar ── */
-  .toolbar {
-    position: sticky; top: 0; z-index: 50; display: grid; grid-template-columns: 1fr auto 1fr;
-    align-items: center; padding: 14px 28px; background: rgba(13,13,13,.92); backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,.08); color: #fff;
-  }
-  .toolbar .left { display: flex; align-items: center; gap: 16px; }
-  .toolbar .left img { height: 22px; filter: brightness(0) invert(1); }
-  .toolbar .left .sep { width: 1px; height: 18px; background: rgba(255,255,255,.18); }
-  .toolbar .left .title { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-  .toolbar .center { display: flex; justify-content: center; }
-  .toolbar .right { display: flex; justify-content: flex-end; gap: 8px; }
-  .tbtn {
-    display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px;
-    background: rgba(255,255,255,.08); color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .08em;
-    text-transform: uppercase; cursor: pointer; border: 1px solid rgba(255,255,255,.12); transition: all .15s ease;
-    font-family: var(--font-body);
-  }
-  .tbtn:hover { background: rgba(255,255,255,.16); }
-  .tbtn.primary { background: var(--vng-orange); border-color: var(--vng-orange); }
-  .tbtn.primary:hover { background: var(--accent-hover); }
-  .tbtn.submit-btn { background: #2EF0A0; border-color: #2EF0A0; color: #0D0D0D; font-weight: 700; }
-  .tbtn.submit-btn:hover { background: #20d48e; border-color: #20d48e; }
-  .tbtn.submit-btn:disabled { background: rgba(255,255,255,.15); border-color: transparent; color: rgba(255,255,255,.4); cursor: not-allowed; }
-  .tbtn i { width: 14px; height: 14px; }
-
-  .save-status { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); padding-left: 12px; }
-  .save-status.saved { color: #2EF0A0; }
-
-  /* ── Stage ── */
-  .stage { padding: 32px 0 80px; display: flex; justify-content: center; }
-  .page {
-    width: 1123px;
-    min-height: 794px;
-    background: var(--paper);
-    color: var(--ink);
-    position: relative;
-    box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.3);
-    overflow: hidden;
-    font-family: var(--font-body);
-    display: grid;
-    grid-template-rows: auto auto 1fr auto auto;
-  }
-
-  /* ── Sheet header ── */
-  .sheet-header {
-    position: relative; height: 130px; background: var(--vng-orange); color: #fff; overflow: hidden;
-  }
-  .sheet-header::after {
-    content: ""; position: absolute; right: -120px; top: -120px; width: 380px; height: 380px;
-    background: radial-gradient(closest-side, rgba(250,195,10,.55), transparent 70%); pointer-events: none;
-  }
-  .sheet-header::before {
-    content: ""; position: absolute; left: -90px; bottom: -90px; width: 260px; height: 260px;
-    background: radial-gradient(closest-side, rgba(13,13,13,.35), transparent 70%); pointer-events: none;
-  }
-  .sheet-header .inner {
-    position: absolute; inset: 0; padding: 22px 44px 30px; z-index: 2;
-    display: flex; align-items: center; gap: 36px;
-  }
-  .sheet-header .titleblock { flex: 0 0 auto; }
-  .sheet-header .titleblock h1 {
-    font-family: var(--font-display); font-weight: 900; font-size: 52px; line-height: .9; text-transform: uppercase;
-    color: #fff; margin: 0; letter-spacing: -0.02em; display: flex; gap: 14px; align-items: baseline;
-  }
-  .sheet-header .titleblock h1 .y { color: var(--vng-yellow); }
-  .sheet-header .titleblock .tag {
-    margin-top: 6px; display: inline-flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 700;
-    letter-spacing: .26em; text-transform: uppercase; color: rgba(255,255,255,.92);
-  }
-  .sheet-header .titleblock .tag .dot { width: 6px; height: 6px; background: var(--vng-yellow); border-radius: 99px; }
-  .sheet-header .edge {
-    position: absolute; left: 0; right: 0; bottom: -1px; height: 14px;
-    background: var(--paper);
-    clip-path: polygon(0 100%, 100% 100%, 100% 60%, 0 0);
-  }
-
-  /* ── Info strip ── */
-  .info-strip {
-    padding: 18px 44px 14px;
-    display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px;
-    border-bottom: 1px solid var(--line);
-    align-items: end;
-  }
-  .field-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
-  .field {
-    border-bottom: 1.5px solid var(--ink);
-    padding: 2px 0 4px;
-    position: relative;
-  }
-  .field .lbl {
-    display: block; font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--vng-orange); margin-bottom: 2px;
-  }
-  .field input {
-    border: 0; outline: 0; background: transparent; width: 100%; font-family: var(--font-body); font-size: 14px;
-    font-weight: 600; color: var(--ink); padding: 2px 0; letter-spacing: -0.01em;
-  }
-  .field input::placeholder { color: rgba(13,13,13,.25); font-weight: 500; }
-
-  /* ── Track selector ── */
-  .track-row { margin: 0; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-  .track-row .lbl-inline {
-    font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--vng-orange);
-    margin-right: 4px; display: block; width: 100%; margin-bottom: 4px;
-  }
-  .track-chip {
-    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent;
-    font-size: 10.5px; font-weight: 600; letter-spacing: .03em; color: var(--ink); cursor: pointer; transition: all .15s ease;
-    font-family: var(--font-body);
-  }
-  .track-chip:hover { background: rgba(13,13,13,.05); }
-  .track-chip.on { background: var(--vng-orange); border-color: var(--vng-orange); color: #fff; }
-
-  /* ── Category grid ── */
-  .categories {
-    padding: 14px 44px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 12px;
-    min-height: 0;
-  }
-  .cat {
-    display: grid; grid-template-columns: 48px 1fr; gap: 14px;
-    border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
-    background: #fff; position: relative;
-    transition: border-color .2s ease, box-shadow .2s ease;
-    min-height: 0;
-  }
-  .cat:hover { border-color: var(--line-strong); }
-  .cat.has-error { border-color: #C10024 !important; box-shadow: 0 0 0 2px rgba(193,0,36,.12); }
-  .cat .badge {
-    width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-size: 26px; font-weight: 900; line-height: 1; color: #fff; letter-spacing: 0;
-    align-self: start;
-  }
-  .cat[data-cat="C"] .badge { background: linear-gradient(160deg, #F05A22 0%, #B8421A 100%); }
-  .cat[data-cat="G"] .badge { background: linear-gradient(160deg, #FAC30A 0%, #F05A22 100%); color: #fff; }
-  .cat[data-cat="S"] .badge { background: linear-gradient(160deg, #FF9B1E 0%, #D2501E 100%); }
-  .cat[data-cat="P"] .badge { background: linear-gradient(160deg, #0D0D0D 0%, #333 100%); color: var(--vng-yellow); }
-
-  .cat .body { display: flex; flex-direction: column; min-width: 0; min-height: 0; flex: 1; }
-  .cat .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
-  .cat .head .num { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--vng-orange); letter-spacing: 0; line-height: 1; }
-  .cat .head .name { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
-  .cat .meta { font-size: 10.5px; color: rgba(13,13,13,.55); line-height: 1.4; margin-bottom: 6px; }
-  .cat textarea {
-    width: 100%; flex: 1; min-height: 80px; resize: none; border: 0; outline: 0; background: transparent;
-    font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: var(--ink); padding: 8px 0 0;
-    margin-top: 4px; border-top: 1px dashed var(--line);
-  }
-  .cat textarea::placeholder { color: rgba(13,13,13,.3); font-style: italic; }
-
-  /* ── Verdict ── */
-  .verdict {
-    margin: 0 44px 14px; padding: 14px 22px; border-radius: 12px;
-    background: var(--vng-black-95); color: #fff; position: relative; overflow: hidden;
-    display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;
-  }
-  .verdict::before {
-    content: ""; position: absolute; right: -80px; bottom: -80px; width: 220px; height: 220px;
-    background: radial-gradient(closest-side, rgba(240,90,34,.4), transparent 70%); pointer-events: none;
-  }
-  .verdict .left { z-index: 2; display: flex; align-items: center; gap: 22px; }
-  .verdict .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--vng-orange); margin-bottom: 1px; }
-  .verdict h3 { font-family: var(--font-display); font-size: 24px; font-weight: 900; text-transform: uppercase; margin: 0; color: #fff; letter-spacing: -0.01em; line-height: 1; }
-  .verdict .breakdown { font-size: 10.5px; color: rgba(255,255,255,.7); line-height: 1.5; max-width: 360px; margin: 0; }
-  .verdict .breakdown b { color: var(--vng-yellow); font-weight: 700; }
-  .verdict-actions { display: flex; gap: 8px; z-index: 2; }
-  .verdict-btn {
-    padding: 10px 22px; border-radius: 999px; font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1;
-    letter-spacing: 0; text-transform: uppercase; border: 2px solid rgba(255,255,255,.18); background: transparent;
-    color: rgba(255,255,255,.5); cursor: pointer; transition: all .15s ease; min-width: 90px; text-align: center;
-  }
-  .verdict-btn:hover { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.85); }
-  .verdict-btn.pass.on { background: #2EF0A0; border-color: #2EF0A0; color: #0D0D0D; box-shadow: 0 4px 14px rgba(46,240,160,.35); }
-  .verdict-btn.fail.on { background: var(--vng-neon-inferno); border-color: var(--vng-neon-inferno); color: #fff; box-shadow: 0 4px 14px rgba(193,0,36,.4); }
-  .verdict.has-error { outline: 2px solid #C10024; }
-
-  /* ── Footer ── */
-  .sheet-footer {
-    position: relative; padding: 8px 44px 16px;
-    display: flex; justify-content: flex-end; align-items: end; gap: 24px;
-  }
-  .footer-meta { text-align: right; min-width: 180px; }
-  .footer-meta .stamp {
-    display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
-    color: rgba(13,13,13,.55); border: 1px solid var(--line-strong); padding: 4px 8px; border-radius: 4px;
-  }
-  .footer-meta .stamp b { color: var(--vng-orange); }
-  .footer-meta .conf { margin-top: 8px; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: rgba(13,13,13,.55); font-weight: 700; }
-
-  /* ── Toast ── */
-  .toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(120px);
-    padding: 13px 24px; border-radius: 10px; font-size: 13px; font-weight: 700;
-    box-shadow: 0 8px 32px rgba(0,0,0,.35); transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-    z-index: 999; display: flex; align-items: center; gap: 10px; white-space: nowrap;
-    font-family: var(--font-body); letter-spacing: .01em;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.success { background: #2EF0A0; color: #0D0D0D; }
-  .toast.error   { background: var(--vng-neon-inferno); color: #fff; }
-
-  /* ── Success overlay ── */
-  .success-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(13,13,13,.82);
-    backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center;
-  }
-  .success-overlay.show { display: flex; }
-  .success-box {
-    background: var(--paper); border-radius: 20px; padding: 48px 52px; text-align: center;
-    box-shadow: 0 40px 80px rgba(0,0,0,.5); max-width: 420px;
-  }
-  .success-box .icon {
-    width: 72px; height: 72px; background: #2EF0A0; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; margin: 0 auto 20px; color: #0D0D0D; font-weight: 900;
-  }
-  .success-box h2 { font-size: 1.5rem; font-weight: 900; color: var(--ink); margin: 0 0 8px; }
-  .success-box p { font-size: 0.85rem; color: rgba(13,13,13,.6); margin: 0 0 28px; line-height: 1.6; }
-  .success-box .btn-new {
-    background: var(--vng-orange); color: #fff; border: none; border-radius: 999px;
-    padding: 12px 28px; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: .04em;
-    text-transform: uppercase; font-family: var(--font-body); transition: background .15s;
-  }
-  .success-box .btn-new:hover { background: var(--accent-hover); }
-
-  /* ── Print ── */
-  @media print {
-    @page { size: A4 landscape; margin: 0; }
-    html, body { background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .toolbar, .success-overlay, .toast { display: none !important; }
-    .stage { padding: 0 !important; }
-    .page { box-shadow: none !important; width: 297mm !important; height: 210mm !important; }
-    .track-chip:not(.on) { opacity: .35 !important; }
-    .verdict-btn:not(.on) { opacity: .3 !important; }
-  }
-</style>
+        /* Styling cho nút điểm */
+        .score-btn {
+            transition: all 0.2s;
+        }
+        .score-btn.active {
+            background-color: #f97316;
+            color: white;
+            border-color: #ea580c;
+        }
+        
+        /* Styling cho quyết định */
+        .verdict-btn { transition: all 0.2s; }
+        .verdict-btn.active {
+            background-color: #1f2937;
+            color: white;
+            border-color: #111827;
+        }
+        
+        .verdict-btn.active-hire { background-color: #16a34a; color: white; border-color: #15803d; }
+        .verdict-btn.active-hold { background-color: #d97706; color: white; border-color: #b45309; }
+        .verdict-btn.active-reject { background-color: #dc2626; color: white; border-color: #b91c1c; }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <div class="left">
-    <img src="https://0b7cdf7f-89be-4572-a15c-3e67d734705d.claudeusercontent.com/v1/design/projects/0b7cdf7f-89be-4572-a15c-3e67d734705d/serve/assets/logos/vnggames-logo-horizontal.png"
-         alt="VNGGames"
-         onerror="this.style.display='none'">
-    <div class="sep"></div>
-    <div class="title">1:1 Interview Scorecard · NextGen 2026</div>
-  </div>
-  <div class="center">
-    <button class="tbtn submit-btn" id="btnSubmit" onclick="submitScorecard()"><i data-lucide="send"></i><span id="btnLabel">Submit to Sheets</span></button>
-  </div>
-  <div class="right"></div>
-</div>
-
-<!-- STAGE -->
-<div class="stage">
-  <div class="page" id="scorecard">
-
-    <!-- HEADER -->
-    <div class="sheet-header">
-      <div class="inner">
-        <div class="titleblock">
-          <h1>1:1 Interview <span class="y">Scorecard</span></h1>
-          <div class="tag"><span class="dot"></span>Confidential · For Hiring Panel Use</div>
+    <!-- Thanh công cụ (Ẩn khi in) -->
+    <div class="no-print sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-orange-500 text-white p-1.5 rounded-md">
+                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-gray-900 leading-tight">VNGGames NextGen</h1>
+                    <p class="text-xs text-gray-500 font-medium">Hệ thống Đánh giá Ứng viên</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="resetForm()" class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Làm mới
+                </button>
+                <button id="submitBtn" onclick="submitForm()" class="flex items-center gap-2 px-4 py-1.5 text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 rounded-md shadow-sm transition disabled:opacity-70 disabled:cursor-not-allowed">
+                    <i data-lucide="send" class="w-4 h-4"></i> Gửi phiếu (Submit)
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="edge"></div>
     </div>
 
-    <!-- INFO STRIP -->
-    <div class="info-strip">
-      <div class="candidate-block">
-        <div class="field-grid">
-          <div class="field"><span class="lbl">Candidate Name</span><input type="text" data-field="name" placeholder="Full name"></div>
-          <div class="field"><span class="lbl">Candidate Code</span><input type="text" data-field="code" placeholder="MKT-XXX"></div>
-          <div class="field"><span class="lbl">Interviewer</span><input type="text" data-field="interviewer" placeholder="Name · role"></div>
+    <!-- Nội dung Phiếu -->
+    <main class="max-w-5xl mx-auto py-8 px-4 print-p-0 print-max-w-full">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 print-border-none overflow-hidden">
+            
+            <!-- Header Tiêu đề -->
+            <div class="border-b border-gray-200 p-8 pb-6 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2 uppercase tracking-wide">Phiếu Chấm Điểm Phỏng Vấn 1:1</h2>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-full border border-red-100">
+                    <i data-lucide="lock" class="w-3 h-3"></i>
+                    BẢO MẬT · CHỈ DÀNH CHO HỘI ĐỒNG TUYỂN DỤNG
+                </div>
+            </div>
+
+            <!-- Thông tin ứng viên -->
+            <div class="p-8 border-b border-gray-200 bg-gray-50">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tên ứng viên</label>
+                        <input type="text" data-field="candidateName" placeholder="Họ và tên đầy đủ..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Mã ứng viên</label>
+                        <input type="text" data-field="candidateId" placeholder="VD: MKT-001" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Người phỏng vấn</label>
+                        <input type="text" data-field="interviewer" placeholder="Tên · Vị trí" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Ngày phỏng vấn</label>
+                            <input type="date" data-field="interviewDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vị trí ứng tuyển</label>
+                            <select data-field="position" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-medium">
+                                <option value="Marketing">Marketing</option>
+                                <option value="Player Experience">Player Experience</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thang điểm hướng dẫn -->
+            <div class="px-8 py-5 border-b border-gray-200">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Thang Điểm:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-red-100 text-red-700 text-sm font-bold flex items-center justify-center border border-red-200">1</span> <span class="text-sm text-gray-600 font-medium">Red Flag</span></div>
+                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-orange-100 text-orange-700 text-sm font-bold flex items-center justify-center border border-orange-200">2</span> <span class="text-sm text-gray-600 font-medium">Nearly Meet</span></div>
+                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-green-100 text-green-700 text-sm font-bold flex items-center justify-center border border-green-200">3</span> <span class="text-sm text-gray-600 font-medium">Meet Expectation</span></div>
+                    <div class="flex items-center gap-2"><span class="flex-shrink-0 w-6 h-6 rounded bg-blue-100 text-blue-700 text-sm font-bold flex items-center justify-center border border-blue-200">4</span> <span class="text-sm text-gray-600 font-medium">Exceed Expectation</span></div>
+                </div>
+            </div>
+
+            <!-- BẢNG ĐÁNH GIÁ -->
+            <div class="p-8">
+                
+                <!-- TIÊU CHÍ 1: VĂN HÓA -->
+                <div class="mb-10">
+                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
+                        <i data-lucide="users" class="w-5 h-5 text-gray-700"></i>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 1 · Phù hợp Văn hóa</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Culture Row 1 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">COLLABORATION</p>
+                                <p class="text-xs text-gray-500 mt-1">Effective Communication<br>Emotional Intelligence</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_collab" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="c_collab_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Culture Row 2 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">HONORING OUR WORDS</p>
+                                <p class="text-xs text-gray-500 mt-1">Time Management<br>Goal Setting<br>Self-Discipline</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_honor" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="c_honor_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Culture Row 3 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">OWNERSHIP</p>
+                                <p class="text-xs text-gray-500 mt-1">Problem Solving<br>Learn How to Learn</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_owner" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="c_owner_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Culture Row 4 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">GROWTH MINDSET</p>
+                                <p class="text-xs text-gray-500 mt-1">Adaptability<br>Resilience<br>Curiosity</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="c_growth" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="c_growth_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-break"></div>
+
+                <!-- TIÊU CHÍ 2: GAME PASSION -->
+                <div class="mb-10">
+                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
+                        <i data-lucide="heart" class="w-5 h-5 text-gray-700"></i>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 2 · Game Passion</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <div class="md:col-span-3">
+                            <p class="font-bold text-gray-900">Gaming Passion</p>
+                            <p class="text-xs text-gray-500 mt-1">Hiểu game, hiểu ngành, theo dõi xu hướng.</p>
+                        </div>
+                        <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="1">1</button>
+                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="2">2</button>
+                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="3">3</button>
+                            <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="p_gaming" data-val="4">4</button>
+                        </div>
+                        <div class="md:col-span-6">
+                            <textarea data-comment="p_gaming_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIÊU CHÍ 3: MKT KNOWLEDGE -->
+                <div class="mb-10">
+                    <div class="flex items-center gap-2 mb-4 border-b border-gray-900 pb-2">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-gray-700"></i>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Tiêu chí 3 · Functional Knowledge (MKT)</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Func Row 1 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">MKT & User Acquisition</p>
+                                <p class="text-xs text-gray-500 mt-1">Hiểu channel, CPA/CPI, đánh giá hiệu quả.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_mkt_ua" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_mkt_ua_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Func Row 2 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Brand / Community</p>
+                                <p class="text-xs text-gray-500 mt-1">Xây dựng brand voice, quản lý cộng đồng, KOL, xử lý khủng hoảng.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_brand" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_brand_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Func Row 3 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Data & Analytical Thinking</p>
+                                <p class="text-xs text-gray-500 mt-1">Đọc data, đặt hypothesis, A/B test, diễn giải metric.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_data" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_data_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Func Row 4 -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div class="md:col-span-3">
+                                <p class="font-bold text-gray-900">Execution & Project Mgmt</p>
+                                <p class="text-xs text-gray-500 mt-1">Lên kế hoạch, cross-team, ship đúng hạn, xử lý sự cố.</p>
+                            </div>
+                            <div class="md:col-span-3 flex justify-start md:justify-center gap-2">
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="1">1</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="2">2</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="3">3</button>
+                                <button class="score-btn w-10 h-10 rounded border border-gray-300 font-medium text-gray-700 hover:border-orange-500 hover:text-orange-600" data-group="f_exec" data-val="4">4</button>
+                            </div>
+                            <div class="md:col-span-6">
+                                <textarea data-comment="f_exec_note" placeholder="Ghi chú / Bằng chứng quan sát..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-break"></div>
+
+                <!-- TỔNG KẾT & QUYẾT ĐỊNH -->
+                <div class="bg-gray-100 -mx-8 -mb-8 p-8 border-t border-gray-200">
+                    <div class="flex items-center gap-2 mb-6">
+                        <i data-lucide="clipboard-check" class="w-5 h-5 text-gray-700"></i>
+                        <h3 class="text-lg font-bold text-gray-900 uppercase">Đánh giá chung & Quyết định</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Điểm mạnh / Ấn tượng tốt</label>
+                            <textarea data-comment="overall_strengths" placeholder="Liệt kê những điểm tích cực nhất..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white h-24"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Điểm cần cải thiện / Rủi ro (Red flags)</label>
+                            <textarea data-comment="overall_weaknesses" placeholder="Liệt kê những điểm đáng lo ngại..." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white h-24"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 text-center">
+                        <label class="block text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider">Kết luận vòng phỏng vấn</label>
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="hire">
+                                <i data-lucide="thumbs-up" class="w-5 h-5"></i> Đồng ý (Hire)
+                            </button>
+                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="hold">
+                                <i data-lucide="pause-circle" class="w-5 h-5"></i> Cân nhắc (Hold)
+                            </button>
+                            <button class="verdict-btn px-6 py-3 rounded-lg border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2" data-verdict="reject">
+                                <i data-lucide="thumbs-down" class="w-5 h-5"></i> Từ chối (No Hire)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-      </div>
-      <div class="track-row">
-        <span class="lbl-inline">Track Applied</span>
-        <button class="track-chip" data-track="Game Developer">Game Developer</button>
-        <button class="track-chip" data-track="Game Designer">Game Designer</button>
-        <button class="track-chip" data-track="Player Experience">Player Experience</button>
-        <button class="track-chip" data-track="Marketing">Marketing</button>
-        <button class="track-chip" data-track="Software Developer">Software Developer</button>
-      </div>
-    </div>
+    </main>
 
-    <!-- CATEGORIES (2×2) -->
-    <div class="categories">
-      <div class="cat" data-cat="C" data-key="culture">
-        <div class="badge">C</div>
-        <div class="body">
-          <div class="head"><span class="num">01</span><span class="name">Culture Fit</span></div>
-          <div class="meta">Alignment with VNGGames values · ownership, candour, learn-fast mindset, team-first behaviour.</div>
-          <textarea placeholder="Comments &amp; feedback — what stood out, examples cited, red/green flags…" data-comment="culture"></textarea>
-        </div>
-      </div>
-      <div class="cat" data-cat="G" data-key="gaming">
-        <div class="badge">G</div>
-        <div class="body">
-          <div class="head"><span class="num">02</span><span class="name">Gaming Passion</span></div>
-          <div class="meta">Genuine player &amp; maker. Articulates what they play, what interests them, what moves the game industry forward.</div>
-          <textarea placeholder="Specific titles, communities, projects, opinions — depth over breadth…" data-comment="gaming"></textarea>
-        </div>
-      </div>
-      <div class="cat" data-cat="S" data-key="soft">
-        <div class="badge">S</div>
-        <div class="body">
-          <div class="head"><span class="num">03</span><span class="name">Soft-Skill</span></div>
-          <div class="meta">Communication, structured thinking, collaboration, conflict navigation, receiving and giving feedback.</div>
-          <textarea placeholder="How they explain trade-offs, handle pushback, listen, ask questions…" data-comment="soft"></textarea>
-        </div>
-      </div>
-      <div class="cat" data-cat="P" data-key="past">
-        <div class="badge">P</div>
-        <div class="body">
-          <div class="head"><span class="num">04</span><span class="name">Past Experience</span></div>
-          <div class="meta">Concrete work — projects shipped, decisions owned, lessons learned. What did they actually do, not what their team did.</div>
-          <textarea placeholder="Specific contributions, scope, scale, impact, growth between projects…" data-comment="past"></textarea>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Khởi tạo các icons của Lucide
+        lucide.createIcons();
 
-    <!-- VERDICT -->
-    <div class="verdict" id="verdictBlock">
-      <div class="left">
-        <div>
-          <div class="eyebrow">Overall Verdict</div>
-          <h3>Recommendation</h3>
-        </div>
-        <div class="breakdown" id="breakdown">Select a recommendation based on the panel's evidence across all four pillars.</div>
-      </div>
-      <div class="verdict-actions">
-        <button class="verdict-btn pass" data-verdict="pass">Pass</button>
-        <button class="verdict-btn fail" data-verdict="fail">Fail</button>
-      </div>
-    </div>
+        const STORAGE_KEY = 'vng_scorecard_mkt_state';
+        let state = {
+            fields: {},
+            scores: {},
+            comments: {},
+            verdict: ''
+        };
 
-    <!-- FOOTER -->
-    <div class="sheet-footer">
-      <div class="footer-meta">
-        <div class="conf">Confidential · VNGGames TA</div>
-      </div>
-    </div>
+        // Load dữ liệu từ LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    state = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Không thể đọc dữ liệu cũ:', e);
+                }
+            }
 
-  </div><!-- /.page -->
-</div><!-- /.stage -->
+            // Phục hồi Fields
+            document.querySelectorAll('[data-field]').forEach(el => {
+                if (state.fields[el.dataset.field]) {
+                    el.value = state.fields[el.dataset.field];
+                }
+            });
 
-<!-- SUCCESS OVERLAY -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-box">
-    <div class="icon">✓</div>
-    <h2>Scorecard Submitted</h2>
-    <p>Feedback for <strong id="successName">this candidate</strong> has been recorded in the VNGGames NextGen 2026 sheet. Thank you.</p>
-    <button class="btn-new" onclick="resetForm()">Start New Scorecard</button>
-  </div>
-</div>
+            // Phục hồi Comments
+            document.querySelectorAll('[data-comment]').forEach(el => {
+                if (state.comments[el.dataset.comment]) {
+                    el.value = state.comments[el.dataset.comment];
+                }
+            });
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+            // Phục hồi Scores
+            Object.keys(state.scores).forEach(group => {
+                const val = state.scores[group];
+                const btn = document.querySelector(`.score-btn[data-group="${group}"][data-val="${val}"]`);
+                if (btn) btn.classList.add('active');
+            });
 
-<script>
-  // ─── CONFIG ───────────────────────────────────────────────────────
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztslEu8akYTEsGwlhqm-V2n7Vo2gCXUSE0_4S_GNXocBjrGwwEIVUmPyV9bnXgNjDD/exec';
+            // Phục hồi Verdict
+            if (state.verdict) {
+                const btn = document.querySelector(`.verdict-btn[data-verdict="${state.verdict}"]`);
+                if (btn) {
+                    if(state.verdict === 'hire') btn.classList.add('active-hire');
+                    else if(state.verdict === 'hold') btn.classList.add('active-hold');
+                    else if(state.verdict === 'reject') btn.classList.add('active-reject');
+                    else btn.classList.add('active');
+                }
+            }
+        }
 
-  // ─── State ────────────────────────────────────────────────────────
-  const KEY   = 'vng_scorecard_v2';
-  const state = { fields: {}, comments: {}, track: null, verdict: null };
+        // Lưu State vào LocalStorage
+        function persist() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
 
-  // ─── Persist ──────────────────────────────────────────────────────
-  function persist() {
-    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
-    const el = document.getElementById('saveStatus');
-    el.textContent = 'Saved · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-    el.classList.add('saved');
-  }
+        // Gắn các Event Listeners
+        document.querySelectorAll('[data-field]').forEach(el => {
+            el.addEventListener('input', (e) => {
+                state.fields[e.target.dataset.field] = e.target.value;
+                persist();
+            });
+        });
 
-  function loadState() {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (!raw) return;
-      const saved = JSON.parse(raw);
-      Object.assign(state, saved);
-      document.querySelectorAll('[data-field]').forEach(i => {
-        if (state.fields[i.dataset.field]) i.value = state.fields[i.dataset.field];
-      });
-      document.querySelectorAll('[data-comment]').forEach(t => {
-        if (state.comments[t.dataset.comment]) t.value = state.comments[t.dataset.comment];
-      });
-      if (state.track) {
-        document.querySelector(`.track-chip[data-track="${state.track}"]`)?.classList.add('on');
-      }
-      if (state.verdict) {
-        document.querySelector(`.verdict-btn[data-verdict="${state.verdict}"]`)?.classList.add('on');
-        styleVerdict(state.verdict);
-      }
-    } catch(e) { console.warn(e); }
-  }
+        document.querySelectorAll('[data-comment]').forEach(el => {
+            el.addEventListener('input', (e) => {
+                state.comments[e.target.dataset.comment] = e.target.value;
+                persist();
+            });
+        });
 
-  function styleVerdict(v) {
-    const bd = document.getElementById('breakdown');
-    if (v === 'pass') bd.innerHTML = '<b>✓ Pass</b> — Candidate is recommended to proceed to the next stage.';
-    else if (v === 'fail') bd.innerHTML = '<b style="color:#F05A22">✗ Fail</b> — Candidate is not recommended to proceed at this time.';
-  }
+        document.querySelectorAll('.score-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn hành vi mặc định nếu nằm trong form
+                const group = btn.dataset.group;
+                const val = btn.dataset.val;
 
-  // ─── Bind inputs ──────────────────────────────────────────────────
-  document.querySelectorAll('[data-field]').forEach(i => {
-    i.addEventListener('input', () => { state.fields[i.dataset.field] = i.value; persist(); });
-  });
-  document.querySelectorAll('[data-comment]').forEach(t => {
-    t.addEventListener('input', () => { state.comments[t.dataset.comment] = t.value; persist(); });
-  });
-  document.querySelectorAll('.track-chip').forEach(c => {
-    c.addEventListener('click', () => {
-      document.querySelectorAll('.track-chip').forEach(x => x.classList.remove('on'));
-      c.classList.add('on');
-      state.track = c.dataset.track;
-      persist();
-    });
-  });
-  document.querySelectorAll('.verdict-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('.verdict-btn').forEach(x => x.classList.remove('on'));
-      b.classList.add('on');
-      state.verdict = b.dataset.verdict;
-      document.getElementById('verdictBlock').classList.remove('has-error');
-      styleVerdict(state.verdict);
-      persist();
-    });
-  });
+                // Xóa trạng thái active của các nút cùng group
+                document.querySelectorAll(`.score-btn[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+                
+                // Active nút hiện tại
+                btn.classList.add('active');
+                
+                // Lưu vào state
+                state.scores[group] = val;
+                persist();
+            });
+        });
 
-  // ─── Toast helper ─────────────────────────────────────────────────
-  function showToast(msg, type = '') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show ' + type;
-    setTimeout(() => t.className = 'toast', 4000);
-  }
+        document.querySelectorAll('.verdict-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Reset toàn bộ style quyết định
+                document.querySelectorAll('.verdict-btn').forEach(b => {
+                    b.classList.remove('active', 'active-hire', 'active-hold', 'active-reject');
+                });
+                
+                const verdict = btn.dataset.verdict;
+                
+                if(verdict === 'hire') btn.classList.add('active-hire');
+                else if(verdict === 'hold') btn.classList.add('active-hold');
+                else if(verdict === 'reject') btn.classList.add('active-reject');
 
-  // ─── Validate ─────────────────────────────────────────────────────
-  function validate() {
-    let ok = true;
+                state.verdict = verdict;
+                persist();
+            });
+        });
 
-    // Required text fields
-    ['name', 'code', 'interviewer'].forEach(f => {
-      const el = document.querySelector(`[data-field="${f}"]`);
-      if (!el || !el.value.trim()) {
-        el && (el.style.borderBottom = '2px solid #C10024');
-        ok = false;
-      } else {
-        el && (el.style.borderBottom = '');
-      }
-    });
+        // Hàm Xóa Form
+        function resetForm() {
+            if (!confirm('Bạn có chắc chắn muốn xóa TẤT CẢ thông tin trên phiếu này? Hành động này không thể hoàn tác.')) return;
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
 
-    // Verdict
-    if (!state.verdict) {
-      document.getElementById('verdictBlock').classList.add('has-error');
-      ok = false;
-    }
+        // Hàm Submit lên Google Sheets
+        async function submitForm() {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
 
-    return ok;
-  }
+            // Kiểm tra thông tin bắt buộc
+            if (!state.fields.candidateName || !state.fields.candidateId) {
+                alert('Vui lòng điền Tên và Mã ứng viên trước khi Submit!');
+                const nameInput = document.querySelector('[data-field="candidateName"]');
+                if(nameInput) nameInput.focus();
+                return;
+            }
 
-  // ─── Submit to Google Sheets ──────────────────────────────────────
-  async function submitScorecard() {
-    if (!validate()) {
-      showToast('⚠️ Please fill in all required fields and select a verdict.', 'error');
-      return;
-    }
+            // Đổi UI sang trạng thái Đang gửi
+            submitBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Đang gửi...';
+            submitBtn.disabled = true;
+            lucide.createIcons();
 
-    const btn   = document.getElementById('btnSubmit');
-    const label = document.getElementById('btnLabel');
-    btn.disabled = true;
-    label.textContent = 'Submitting…';
+            // Tổng hợp payload
+            const payload = {
+                timestamp: new Date().toISOString(),
+                ...state.fields,
+                ...state.scores,
+                ...state.comments,
+                verdict: state.verdict
+            };
 
-    const data = {
-      submittedAt:         new Date().toISOString(),
-      candidateName:       state.fields.name       || '',
-      candidateCode:       state.fields.code       || '',
-      interviewer:         state.fields.interviewer || '',
-      track:               state.track             || '',
-      verdict:             state.verdict           ? state.verdict.charAt(0).toUpperCase() + state.verdict.slice(1) : '',
-      commentsCulture:     state.comments.culture  || '',
-      commentsGaming:      state.comments.gaming   || '',
-      commentsSoft:        state.comments.soft     || '',
-      commentsPast:        state.comments.past     || '',
-    };
+            // THAY ĐƯỜNG LINK GOOGLE APPS SCRIPT WEB APP CỦA BẠN VÀO ĐÂY
+            const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxEBjDw9kSq8l3HQT_CiZOebAb9MFdZ07TZAt6kvvScWOI-s8v7wa8oScY1JGPSoTC9ig/exec';
 
-    try {
-      await fetch(SCRIPT_URL, {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body:    JSON.stringify(data),
-      });
+            try {
+                if (WEBAPP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE') {
+                    // Demo mode (Giả lập thời gian gửi)
+                    await new Promise(r => setTimeout(r, 1200));
+                    console.log('Dữ liệu chuẩn bị gửi đi:', payload);
+                    alert('Đây là bản demo!\n\nHãy thay thế WEBAPP_URL trong mã HTML bằng link Google Apps Script của bạn để kết nối với Google Sheets.\n\nĐã log dữ liệu ra Console (F12).');
+                } else {
+                    // Gửi dữ liệu thật
+                    await fetch(WEBAPP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Sử dụng no-cors để tránh lỗi CORS policy từ phía browser khi gọi Google Script
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                
+                // Trạng thái thành công
+                submitBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Đã gửi thành công';
+                submitBtn.classList.replace('bg-gray-900', 'bg-green-600');
+                submitBtn.classList.replace('hover:bg-gray-800', 'hover:bg-green-700');
+                lucide.createIcons();
+                
+                // Reset nút bấm sau 3 giây
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.replace('bg-green-600', 'bg-gray-900');
+                    submitBtn.classList.replace('hover:bg-green-700', 'hover:bg-gray-800');
+                    lucide.createIcons();
+                }, 3000);
 
-      // Show success
-      document.getElementById('successName').textContent = data.candidateName || 'this candidate';
-      document.getElementById('successOverlay').classList.add('show');
-      showToast('✓ Saved to Google Sheets!', 'success');
+            } catch (error) {
+                console.error('Lỗi khi gửi dữ liệu:', error);
+                alert('Có lỗi xảy ra khi gửi dữ liệu lên máy chủ. Vui lòng thử lại!');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                lucide.createIcons();
+            }
+        }
 
-    } catch(err) {
-      showToast('❌ Submission failed — please try again.', 'error');
-      btn.disabled = false;
-      label.textContent = 'Submit to Sheets';
-    }
-  }
-
-  // ─── Reset ────────────────────────────────────────────────────────
-  function resetForm() {
-    if (!document.getElementById('successOverlay').classList.contains('show')) {
-      if (!confirm('Clear all entries on this scorecard?')) return;
-    }
-    try { localStorage.removeItem(KEY); } catch(e){}
-    location.reload();
-  }
-
-  // ─── Export JSON ──────────────────────────────────────────────────
-  function exportJSON() {
-    const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    const name = (state.fields.name || 'scorecard').replace(/\s+/g, '_');
-    a.href = url; a.download = `vnggames_${name}_${Date.now()}.json`; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  // ─── Init ─────────────────────────────────────────────────────────
-  loadState();
-  lucide.createIcons();
-</script>
-
+        // Khởi chạy khi load trang
+        loadState();
+        
+        // Mặc định chọn vị trí Marketing nếu chưa có
+        if(!state.fields.position) {
+            const posSelect = document.querySelector('[data-field="position"]');
+            posSelect.value = "Marketing";
+            state.fields.position = "Marketing";
+            persist();
+        }
+    </script>
 </body>
 </html>
